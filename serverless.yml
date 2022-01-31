@@ -1,0 +1,35 @@
+service: be
+package:
+  individually: true
+provider:
+  name: aws
+  profile: ${opt:aws-profile, "ntuscse"}
+  region: "us-west-2"
+  stage: ${opt:stage, "dev"}
+  runtime: python3.9
+
+plugins:
+  - serverless-offline
+  - serverless-python-requirements
+  - serverless-lift
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    usePoetry: true
+
+functions:
+  app:
+    handler: my-project.app.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /
+      - http:
+          method: any
+          path: /{proxy+}
+
+constructs:
+  myTable:
+    type: database/dynamodb-single-table

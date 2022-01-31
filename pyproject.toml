@@ -2,11 +2,14 @@
 name = "be"
 version = "0.1.0"
 description = "Serverless backend"
-authors = ["Dyllon <dyllon.g@outlook.com>"]
+authors = ["NTU SCSE Club <cse-it@e.ntu.edu.sg>"]
 license = "GPL-3.0-only"
 
 [tool.poetry.dependencies]
 python = "^3.9"
+uvicorn = {extras = ["standard"], version = "^0.17.1"}
+mangum = "^0.12.3"
+boto3 = "^1.20.46"
 
 [tool.poetry.dev-dependencies]
 
