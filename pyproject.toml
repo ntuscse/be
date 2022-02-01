@@ -10,6 +10,7 @@ python = "^3.9"
 uvicorn = {extras = ["standard"], version = "^0.17.1"}
 mangum = "^0.12.3"
 boto3 = "^1.20.46"
+fastapi = "^0.73.0"
 
 [tool.poetry.dev-dependencies]
 

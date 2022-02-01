@@ -16,10 +16,12 @@ custom:
   pythonRequirements:
     dockerizePip: true
     usePoetry: true
+  serverless-offline:
+    useChildProcesses: true
 
 functions:
-  app:
-    handler: my-project.app.handler
+  root:
+    handler: be.main.handler
     environment:
       STAGE: ${self:provider.stage}
     events:

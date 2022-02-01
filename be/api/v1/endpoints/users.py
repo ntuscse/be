@@ -1,18 +1,16 @@
-from fastapi import FastAPI
-from mangum import Mangum
-import os
+from fastapi import APIRouter
 
-stage = os.environ.get('STAGE', 'dev')
-
-app = FastAPI()
+router = APIRouter()
 
 
-@app.get("/")
-def index():
-    return {"Hello": "World"}
+# parent route is /users/
+
+@router.get("/")
+async def root():
+    return {"message": "Get Users!"}
 
 
-@app.get("/users/user_id")
+@router.get("/user_id")
 def read_item(user_id: int):
     table_name = os.environ.get('TABLE_NAME', '')
     table = boto3.resource(
@@ -23,6 +21,3 @@ def read_item(user_id: int):
         }
     )
     return {"user_obj": response['Item']}
-
-
-handler = Mangum(app)
