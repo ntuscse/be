@@ -28,9 +28,18 @@ functions:
       - http:
           method: get
           path: /
+
+  getUsers:
+    handler: be.api.v1.endpoints.users.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
       - http:
-          method: any
-          path: /{proxy+}
+          method: get
+          path: /users/
+      - http:
+          method: get
+          path: /users/{proxy+}
 
 constructs:
   myTable:
