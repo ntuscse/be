@@ -6,7 +6,8 @@
   "scripts": {
     "setup": "npm install && poetry install",
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "poetry run pytest --import-mode importlib",
+    "test:watch": "poetry run pytest-watch -- --import-mode importlib",
     "postinstall": "run-script-os",
     "postinstall:win32": "patch-package",
     "postinstall:default": "echo \"Your OS doesn't need to patch node_modules. Skipping.\""
