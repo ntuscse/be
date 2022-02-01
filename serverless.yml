@@ -21,7 +21,7 @@ custom:
 
 functions:
   root:
-    handler: be.main.handler
+    handler: be.root.handler
     environment:
       STAGE: ${self:provider.stage}
     events:
