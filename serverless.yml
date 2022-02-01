@@ -17,7 +17,9 @@ custom:
     dockerizePip: true
     usePoetry: true
   serverless-offline:
+    allowCache: true
     useChildProcesses: true
+    httpPort: 4000
 
 functions:
   root:
@@ -36,10 +38,22 @@ functions:
     events:
       - http:
           method: get
-          path: /users/
+          path: /users
       - http:
           method: get
           path: /users/{proxy+}
+
+  getProducts:
+    handler: be.api.v1.endpoints.products.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /products
+      - http:
+          method: get
+          path: /products/{proxy+}
 
 constructs:
   myTable:
