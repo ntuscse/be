@@ -4,8 +4,6 @@ import os
 
 
 def createNonAuthRouter(router):
-    stage = os.environ.get('STAGE', 'dev')  # ???
-
     app = FastAPI()
     app.include_router(router)
 

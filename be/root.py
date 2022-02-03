@@ -2,8 +2,6 @@ from fastapi import FastAPI
 from mangum import Mangum
 import os
 
-stage = os.environ.get('STAGE', 'dev')
-
 app = FastAPI()
 
 
