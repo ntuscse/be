@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "be"
+version = "0.1.0"
+description = "Serverless backend"
+authors = ["NTU SCSE Club <cse-it@e.ntu.edu.sg>"]
+license = "GPL-3.0-only"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+uvicorn = {extras = ["standard"], version = "^0.17.1"}
+mangum = "^0.12.3"
+boto3 = "^1.20.46"
+fastapi = "^0.73.0"
+pytest = "^6.2.5"
+requests = "^2.27.1"
+pytest-watch = "^4.2.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,32 @@
+{
+  "name": "be",
+  "version": "0.1.0",
+  "description": "Serverless backend",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install && poetry install",
+    "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
+    "test": "poetry run pytest --import-mode importlib",
+    "test:watch": "poetry run pytest-watch -- --import-mode importlib",
+    "postinstall": "run-script-os",
+    "postinstall:win32": "patch-package",
+    "postinstall:default": "echo \"Your OS doesn't need to patch node_modules. Skipping.\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ntuscse/be.git"
+  },
+  "author": "NTU SCSE Club <cse-it@e.ntu.edu.sg>",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/ntuscse/be/issues"
+  },
+  "homepage": "https://github.com/ntuscse/be#readme",
+  "devDependencies": {
+    "patch-package": "^6.4.7",
+    "run-script-os": "^1.1.6",
+    "serverless-lift": "^1.12.0",
+    "serverless-offline": "^8.4.0",
+    "serverless-python-requirements": "^5.3.1"
+  }
+}

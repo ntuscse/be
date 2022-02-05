@@ -1,0 +1,12 @@
+diff --git a/node_modules/serverless-python-requirements/lib/poetry.js b/node_modules/serverless-python-requirements/lib/poetry.js
+index 23f43dc..2468c3e 100644
+--- a/node_modules/serverless-python-requirements/lib/poetry.js
++++ b/node_modules/serverless-python-requirements/lib/poetry.js
+@@ -43,6 +43,7 @@ async function pyprojectTomlToRequirements() {
+         ],
+         {
+           cwd: this.servicePath,
++          shell: true
+         }
+       );
+     } catch (e) {
