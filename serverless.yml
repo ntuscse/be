@@ -14,7 +14,7 @@ plugins:
   - serverless-lift
 custom:
   pythonRequirements:
-    dockerizePip: true
+    dockerizePip: false
     usePoetry: true
   serverless-offline:
     allowCache: true
