@@ -1,0 +1,53 @@
+# This is a basic workflow to help you get started with Actions
+
+name: deploy to production
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pull request events but only for the production branch
+  pull_request:
+    branches: [production]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          architecture: "x64"
+
+      - uses: aws-actions/setup-sam@v1
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "ap-southeast-1"
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+
+      - name: Install dependencies
+        run: npm run setup
+
+      - name: Build
+        run: serverless deploy
