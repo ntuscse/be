@@ -4,7 +4,7 @@ package:
 provider:
   name: aws
   profile: ${opt:aws-profile, "ntuscse"}
-  region: "us-west-2"
+  region: "ap-southeast-1"
   stage: ${opt:stage, "dev"}
   runtime: python3.9
 
@@ -14,7 +14,7 @@ plugins:
   - serverless-lift
 custom:
   pythonRequirements:
-    dockerizePip: true
+    dockerizePip: false
     usePoetry: true
   serverless-offline:
     allowCache: true
@@ -58,3 +58,33 @@ functions:
 constructs:
   myTable:
     type: database/dynamodb-single-table
+
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        # Generate a name based on the stage
+        UserPoolName: ${self:provider.stage}-user-pool
+        # Set email as an alias
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        # Generate an app client name based on the stage
+        ClientName: ${self:provider.stage}-user-pool-client
+        UserPoolId:
+          Ref: CognitoUserPool
+        GenerateSecret: true
+        AllowedOAuthFlows: 
+          - code
+        AllowedOAuthScopes: 
+          - email
+          - openid
+        CallbackURLs: 
+          - https://google.com
