@@ -55,6 +55,15 @@ functions:
           method: get
           path: /products/{proxy+}
 
+  preSignUp:
+    handler: be.auth.v1.pre_sign_up.lambda_handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - cognitoUserPool:
+          pool: SCSEAuth
+          trigger: PreSignUp
+
 constructs:
   myTable:
     type: database/dynamodb-single-table
@@ -62,7 +71,7 @@ constructs:
 
 resources:
   Resources:
-    CognitoUserPool:
+    CognitoUserPoolSCSEAuth:
       Type: AWS::Cognito::UserPool
       Properties:
         # Generate a name based on the stage
@@ -72,14 +81,25 @@ resources:
           - email
         AutoVerifiedAttributes:
           - email
+        Schema:
+          - Name: "family_name"
+            Required: true
+            Mutable: true
+          - Name: "given_name"
+            Required: true
+            Mutable: true
+          - Name: "updated_at"
+            Required: true
+            Mutable: true
+        
 
-    CognitoUserPoolClient:
+    CognitoUserPoolClientSCSEAuth:
       Type: AWS::Cognito::UserPoolClient
       Properties:
         # Generate an app client name based on the stage
         ClientName: ${self:provider.stage}-user-pool-client
         UserPoolId:
-          Ref: CognitoUserPool
+          Ref: CognitoUserPoolSCSEAuth
         GenerateSecret: true
         AllowedOAuthFlows: 
           - code
@@ -88,3 +108,4 @@ resources:
           - openid
         CallbackURLs: 
           - https://google.com
+        
