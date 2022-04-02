@@ -26,7 +26,7 @@ class Response(BaseModel):
 
 
 @router.patch("/{post_id}",
-              response_model=Response,
+              #   response_model=Response,
               summary="Patch a post",
               description="Updates a single post in the db, specified by post_id",
               tags={"posts"}

@@ -7,7 +7,7 @@ router = APIRouter(prefix="/posts")
 
 
 @router.get("",
-            response_model=list[Post],
+            # response_model=list[Post],
             summary="Get posts",
             description="Gets a list of posts from the db",
             tags={"posts"}
@@ -18,7 +18,7 @@ def get_posts(
 
 
 @router.get("/{post_id}",
-            response_model=Post,
+            # response_model=Post,
             summary="Get a post",
             description="Gets a single posts from the db, specified by post_id",
             tags={"posts"}
