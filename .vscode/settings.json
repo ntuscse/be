@@ -1,0 +1,5 @@
+{
+  "python.testing.pytestArgs": ["be"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
+}

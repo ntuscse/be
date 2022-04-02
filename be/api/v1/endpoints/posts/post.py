@@ -26,7 +26,7 @@ async def post_posts(
         for image in images:
             images_filenames.append(image.filename)
 
-    new_id = str(int(dummy_posts[-1]["id"])+1)
+    new_id = str(int(dummy_posts[-1].id)+1)
 
     return {
         "status": "Post created successfully",

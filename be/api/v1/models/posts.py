@@ -10,6 +10,7 @@ class PostCategory(str, Enum):
 
 
 class Post(BaseModel):
+    id: str
     title: constr(max_length=49)
     body: str
     author: constr(max_length=49)
