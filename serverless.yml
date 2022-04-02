@@ -55,10 +55,21 @@ functions:
           method: get
           path: /products/{proxy+}
 
+  getPosts:
+    handler: be.api.v1.endpoints.posts.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /posts
+      - http:
+          method: get
+          path: /posts/{proxy+}
+
 constructs:
   myTable:
     type: database/dynamodb-single-table
-
 
 resources:
   Resources:
@@ -81,10 +92,10 @@ resources:
         UserPoolId:
           Ref: CognitoUserPool
         GenerateSecret: true
-        AllowedOAuthFlows: 
+        AllowedOAuthFlows:
           - code
-        AllowedOAuthScopes: 
+        AllowedOAuthScopes:
           - email
           - openid
-        CallbackURLs: 
+        CallbackURLs:
           - https://google.com
