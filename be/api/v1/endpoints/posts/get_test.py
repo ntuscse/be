@@ -1,6 +1,7 @@
-from turtle import pos
-from utils.test_app import createTestClient
-from be.api.v1.endpoints.posts.get import router, dummy_posts
+from utils.test_app import createTestClient, raisesHTTPException
+from be.api.v1.endpoints.posts.get import router
+from be.api.v1.fixtures.post_data import dummy_posts
+
 
 client = createTestClient(router)
 
@@ -18,6 +19,7 @@ def test_get_single_post_200():
 
 
 def test_get_single_post_404():
-    response = client.get("/posts/6")
-    assert response.status_code == 404
-    # todo: assert the 404 detail msg
+    with raisesHTTPException as err:
+        client.get("/posts/6")
+    assert err.value.status_code == 404
+    assert err.value.detail == "Post not found"
