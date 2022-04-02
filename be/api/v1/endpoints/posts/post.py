@@ -1,4 +1,3 @@
-from types import NoneType
 from typing import Optional
 from fastapi import APIRouter, File, Form, UploadFile
 
@@ -18,7 +17,7 @@ async def post_posts(
 ):
     # todo: upload image blobs to s3
     images_filenames = []
-    if type(images) != NoneType:
+    if type(images) != type(None):
         for image in images:
             images_filenames.append(image.filename)
 
