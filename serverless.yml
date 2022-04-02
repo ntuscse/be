@@ -55,10 +55,69 @@ functions:
           method: get
           path: /products/{proxy+}
 
+  getPosts:
+    handler: be.api.v1.endpoints.posts.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /posts
+      - http:
+          method: get
+          path: /posts/{proxy+}
+
+  postPosts:
+    handler: be.api.v1.endpoints.posts.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: post
+          path: /posts
+
+  patchPosts:
+    handler: be.api.v1.endpoints.posts.patch.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: patch
+          path: /posts/{proxy+}
+
+  deletePosts:
+    handler: be.api.v1.endpoints.posts.delete.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: delete
+          path: /posts/{proxy+}
+
+  getDocs:
+    handler: be.docs.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /openapi.json
+      - http:
+          method: get
+          path: /docs
+      - http:
+          method: get
+          path: /docs/{proxy+}
+      - http:
+          method: get
+          path: /redoc
+      - http:
+          method: get
+          path: /redoc/{proxy+}
+
 constructs:
   myTable:
     type: database/dynamodb-single-table
-
 
 resources:
   Resources:
@@ -81,10 +140,10 @@ resources:
         UserPoolId:
           Ref: CognitoUserPool
         GenerateSecret: true
-        AllowedOAuthFlows: 
+        AllowedOAuthFlows:
           - code
-        AllowedOAuthScopes: 
+        AllowedOAuthScopes:
           - email
           - openid
-        CallbackURLs: 
+        CallbackURLs:
           - https://google.com
