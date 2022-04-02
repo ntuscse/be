@@ -6,7 +6,12 @@ from be.api.v1.fixtures.post_data import dummy_posts
 router = APIRouter(prefix="/posts")
 
 
-@router.delete("/{post_id}")
+@router.delete("/{post_id}",
+               # response_model=Post,
+               summary="Delete a post",
+               description="Deletes a single posts from the db, specified by post_id",
+               tags={"posts"}
+               )
 async def delete_post(post_id: str):
 
     for post in dummy_posts:

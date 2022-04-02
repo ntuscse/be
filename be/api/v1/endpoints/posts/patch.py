@@ -1,13 +1,36 @@
 
-from typing import Optional
+from re import S
+from typing import Optional, Set
 
 from fastapi import APIRouter, File, Form, UploadFile
+from pydantic import BaseModel
+
+from be.api.v1.models.posts import PostCategory
 
 
 router = APIRouter(prefix="/posts")
 
 
-@router.patch("/{post_id}")
+class UpdatedPost(BaseModel):
+    id: str
+    title: str
+    body: str
+    author: str
+    category: list[PostCategory]
+
+
+class Response(BaseModel):
+    status: str
+    update: Set
+    UpdatedPost: UpdatedPost
+
+
+@router.patch("/{post_id}",
+              response_model=Response,
+              summary="Patch a post",
+              description="Updates a single post in the db, specified by post_id",
+              tags={"posts"}
+              )
 async def patch_post(
     post_id: str,
     title: Optional[str] = Form(None),
@@ -18,9 +41,7 @@ async def patch_post(
 ):
     # todo: upload image blobs to s3
 
-    # todo: lookup post by post_id
-
-    # update post with form data
+    # todo: lookup and update post by post_id in db
 
     return {
         "status": "Post created successfully",

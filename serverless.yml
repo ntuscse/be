@@ -67,6 +67,27 @@ functions:
           method: get
           path: /posts/{proxy+}
 
+  getDocs:
+    handler: be.root.docs_handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /openapi.json
+      - http:
+          method: get
+          path: /docs
+      - http:
+          method: get
+          path: /docs/{proxy+}
+      - http:
+          method: get
+          path: /redoc
+      - http:
+          method: get
+          path: /redoc/{proxy+}
+
 constructs:
   myTable:
     type: database/dynamodb-single-table

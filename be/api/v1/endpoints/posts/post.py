@@ -7,7 +7,12 @@ from be.api.v1.fixtures.post_data import dummy_posts
 router = APIRouter(prefix="/posts")
 
 
-@router.post("")
+@router.post("",
+             # response_model=Post,
+             summary="Create a post",
+             description="Adds a single post to the db",
+             tags={"posts"}
+             )
 async def post_posts(
     title: str = Form(...),
     body: str = Form(...),
