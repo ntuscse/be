@@ -1,12 +1,11 @@
 from fastapi import FastAPI
 from mangum import Mangum
-import os
 
 
-def createNonAuthRouter(router):
+def create_non_auth_router(router):
     app = FastAPI()
     app.include_router(router)
 
-    mangumInstance = Mangum(app)
+    mangum_instance = Mangum(app)
 
-    return mangumInstance
+    return mangum_instance
