@@ -33,6 +33,10 @@ jobs:
       - name: Install Poetry
         uses: abatilo/actions-poetry@v2.0.0
 
+      - name: Install serverless
+        run: |
+          npm install -g serverless
+
       - name: Install dependencies
         run: npm run setup
 
