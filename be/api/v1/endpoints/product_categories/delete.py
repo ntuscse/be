@@ -1,27 +1,24 @@
-from ast import Str
+import os
 from be.api.v1.templates.nonAuthRoute import createNonAuthRouter
-from utils.aws.dynamodb import dynamodb
+from utils.aws.dynamodb import delete_db
 from fastapi import APIRouter
-from pydantic import BaseModel
 
 
 router = APIRouter(prefix="/product-categories")
 
-@router.post("/{product_category_id}")
+@router.delete("/{product_category_name}")
 # Delete an item in the product-categories table
-async def delete_product_category(category: Str):
-    table = dynamodb.Table("product-categories")
-    try:
-        table.delete_item(
-            Key={
-                "name": category.name
-            }
-        )
-    except Exception as e:
-        raise Exception('Unable to delete a product category')
+async def delete_product_category(product_category_name: str):
+    table_name = os.environ["PRODUCT_CATEGORIES_TABLE_NAME"]
+    key = {
+        "name": {
+            'S': product_category_name
+        }
+    }
+    delete_db(table_name, key)
     return {
         "status": "Product category successfully deleted",
-        "category": category
+        "category": product_category_name
     }
 
 handler = createNonAuthRouter(router)

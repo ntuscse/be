@@ -38,6 +38,7 @@ def update_db(table_name, item):
   
 def delete_db(table_name, key):
     response = dynamodb.delete_item(
+        TableName=table_name,
         Key=key
     )
     waiter = dynamodb.get_waiter('table_exists')

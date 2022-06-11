@@ -1,21 +1,19 @@
 from moto import mock_dynamodb
+import pytest
 from utils.test_app import createTestClient
-from be.api.v1.endpoints.product_categories.post import router
-from be.api.v1.endpoints.product_categories.test_utils import get_mock_db_item, create_mock_db, delete_mock_table
+from be.api.v1.endpoints.product_categories.delete import router
+from be.api.v1.endpoints.product_categories.test_utils import get_mock_db_item
 
 client = createTestClient(router)
 
+@pytest.mark.usefixtures("provision_mock_db")
 @mock_dynamodb
-def test_post_product_categories():
-    req_body = {
-        "name": "test-category"
-    }
-    response = client.post('/product-categories', json=req_body)
+def test_delete_product_categories():
+    response = client.delete('/product-categories/test-category')
     item = get_mock_db_item()
-    print(item)
-    delete_mock_table()
     assert response.status_code == 200
     assert response.json() == {
-        "status": "Product category successfully created",
-        "category": "test-category"
+        'status': 'Product category successfully deleted',
+        'category': 'test-category'
     }
+    assert item == None
