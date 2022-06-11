@@ -38,7 +38,7 @@ jobs:
           npm install -g serverless
 
       - name: Install dependencies
-        run: npm run setup
+        run: npm run setup:ci
 
       - name: Pytest
         run: npm run test

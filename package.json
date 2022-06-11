@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install && sls dynamodb install && poetry install",
+    "setup:ci": "npm ci && sls dynamodb install && poetry install",
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
     "test": "poetry run pytest --import-mode importlib",
     "lint": "poetry run pylint --fail-under=8 be",
