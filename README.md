@@ -105,6 +105,8 @@ $ npm run offline
 ```
 
 ## Test
+Create a dotenv file and follow the format as shown in stub.env
+
 Run the following command to run tests:
 ```bash
 $ npm run test
