@@ -38,6 +38,12 @@ custom:
   dynamodb:
     start:
       migrate: true
+      port: 8011
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      seed: true
+      convertEmptyValues: true
     stages:
       - dev
 
@@ -129,21 +135,19 @@ resources:
         AllowedOAuthScopes: 
           - email
           - openid
-        CallbackURLs: 
+        CallbackURLs:
           - https://google.com
 
     productCategoriesTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
+        TableName: ${self:provider.environment.PRODUCT_CATEGORIES_TABLE_NAME}
         AttributeDefinitions:
-          -
-            AttributeName: name
+          - AttributeName: name
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: name
+          - AttributeName: name
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.PRODUCT_CATEGORIES_TABLE_NAME}
