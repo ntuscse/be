@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/ntuscse/be#readme",
   "devDependencies": {
+    "@aws-cdk/cloud-assembly-schema": "^1.142.0",
     "concurrently": "^7.2.1",
     "patch-package": "^6.4.7",
     "run-script-os": "^1.1.6",
