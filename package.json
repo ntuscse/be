@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install && sls dynamodb install && poetry install",
-    "offline": "concurrently --names \"dynamodb,api\" -c \"green,blue\" \"npm run offline:dynamodb\" \"wait-on http://localhost:8011 && npm run offline:serverless \" ",
-    "offline:dynamodb": "sls dynamodb start --port 8011 --migrate",
-    "offline:serverless": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
+    "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
     "test": "poetry run pytest --import-mode importlib",
     "lint": "poetry run pylint --fail-under=8 be",
     "test:watch": "poetry run pytest-watch -- --import-mode importlib",
