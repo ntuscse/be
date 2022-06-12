@@ -1,4 +1,4 @@
-from be.api.v1.templates.nonAuthRoute import createNonAuthRouter
+from be.api.v1.templates.non_auth_route import create_non_auth_router
 from utils.aws.dynamodb import read_db
 from fastapi import APIRouter, HTTPException
 import os
@@ -24,4 +24,4 @@ def get_product_category(product_category_name: str):
     return {'product_category': {'name': response['name']['S']}}
 
 
-handler = createNonAuthRouter(router)
+handler = create_non_auth_router(router)

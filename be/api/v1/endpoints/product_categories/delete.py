@@ -1,5 +1,5 @@
 import os
-from be.api.v1.templates.nonAuthRoute import createNonAuthRouter
+from be.api.v1.templates.non_auth_route import create_non_auth_router
 from utils.aws.dynamodb import delete_db
 from fastapi import APIRouter
 
@@ -21,4 +21,4 @@ async def delete_product_category(product_category_name: str):
         "category": product_category_name
     }
 
-handler = createNonAuthRouter(router)
+handler = create_non_auth_router(router)

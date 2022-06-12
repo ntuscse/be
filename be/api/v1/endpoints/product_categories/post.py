@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from be.api.v1.templates.nonAuthRoute import createNonAuthRouter
+from be.api.v1.templates.non_auth_route import create_non_auth_router
 from utils.aws.dynamodb import write_db
 from fastapi import APIRouter, HTTPException
 import os
@@ -25,4 +25,4 @@ async def create_product_category(product_category: ProductCategory):
         "category": product_category.name,
     }
 
-handler = createNonAuthRouter(router)
+handler = create_non_auth_router(router)
