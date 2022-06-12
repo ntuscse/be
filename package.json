@@ -8,6 +8,7 @@
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
     "test": "poetry run pytest --import-mode importlib",
     "lint": "poetry run pylint --fail-under=8 be",
+    "lint:fix": "poetry run black be",
     "test:watch": "poetry run pytest-watch -- --import-mode importlib",
     "postinstall": "run-script-os",
     "postinstall:win32": "patch-package",
