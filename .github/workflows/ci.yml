@@ -69,7 +69,7 @@ jobs:
           virtualenvs-path: ./poetry_virtualenv
           installer-parallel: true
 
-      - name: Load cached venv
+      - name: Load cached virtualenv
         id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
@@ -93,9 +93,3 @@ jobs:
 
       - name: Pytest
         run: npm run lint
-
-      - name: Cache report
-        run: |
-          echo "poetry cache hit: ${steps.cached-poetry-dependencies.outputs.cache-hit}"
-          echo "yarn cache hit: ${steps.yarn-cache.outputs.cache-hit}"
-
