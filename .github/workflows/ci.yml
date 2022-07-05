@@ -38,6 +38,10 @@ jobs:
           virtualenvs-path: ./poetry_virtualenv
           installer-parallel: true
 
+      - name: Setup aws dummy credentials
+        run: |
+          touch ~/.aws/credentials
+
       - name: Install dependencies
         run: npm run setup
 
