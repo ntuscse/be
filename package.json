@@ -7,7 +7,7 @@
     "setup": "npm install && sls dynamodb install && poetry install",
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
     "offline:dynamodb": "sls dynamodb start --port 8011 --migrate --inMemory --heapInitial 200m --heapMax 1g --seed --convertEmptyValues",
-    "test": "concurrently -n dynamodb-offline,pytest \"npm run offline:dynamodb\" \"npm run test:py\"",
+    "test": "concurrently -n dynamodb-offline,pytest --kill-others --success first \"npm run offline:dynamodb\" \"npm run test:py\"",
     "test:py": "poetry run pytest --import-mode importlib",
     "lint": "poetry run pylint --fail-under=8 be",
     "test:watch": "poetry run pytest-watch -- --import-mode importlib",
