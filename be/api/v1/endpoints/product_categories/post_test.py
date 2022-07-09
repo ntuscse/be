@@ -13,7 +13,7 @@ def test_post_product_categories():
         "name": "test-category"
     }
     response = client.post('/product-categories', json=req_body)
-    item = get_mock_db_item()
+    item = get_mock_db_item('test-category')
     print(item)
     assert response.status_code == 200
     assert response.json() == {

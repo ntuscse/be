@@ -1,8 +1,7 @@
 import os
+from fastapi import APIRouter, HTTPException
 from be.api.v1.templates.non_auth_route import create_non_auth_router
-from utils.aws.dynamodb import delete_db
-from fastapi import APIRouter
-
+from utils.aws.dynamodb import delete_item_from_db
 
 router = APIRouter(prefix="/product-categories")
 
@@ -15,10 +14,12 @@ async def delete_product_category(product_category_name: str):
             'S': product_category_name
         }
     }
-    delete_db(table_name, key)
+    response = delete_item_from_db(table_name, key)
+    # if not response.get('Attributes'):
+    #     raise HTTPException(status_code=404, detail="Product category does not exist")
     return {
         "status": "Product category successfully deleted",
-        "category": product_category_name
+        "category": product_category_name,
     }
 
 handler = create_non_auth_router(router)

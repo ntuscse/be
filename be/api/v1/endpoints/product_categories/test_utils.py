@@ -1,5 +1,5 @@
 import os
-from utils.aws.dynamodb import create_db, delete_table, write_db, delete_table, read_db, dynamodb
+from utils.aws.dynamodb import create_db, delete_table_from_db, write_item_to_db, read_item_from_db, dynamodb
 
 
 def create_mock_db():
@@ -27,21 +27,23 @@ def create_mock_db():
         return
 
 def populate_db_with_items():
-    write_db(
-            table_name=os.environ["PRODUCT_CATEGORIES_TABLE_NAME"],
-            item= {
-            "name": {
-                'S': 'test_category'
-            }
-        }
-    )
+    items = ['category_to_be_deleted', 'category_to_be_got']
+    for item in items:
+        write_item_to_db(
+                table_name=os.environ["PRODUCT_CATEGORIES_TABLE_NAME"],
+                item={
+                    "name": {
+                        'S': item
+                    }
+                }
+        )
 
-def get_mock_db_item():
-    return read_db(
+def get_mock_db_item(item):
+    return read_item_from_db(
         table_name=os.environ["PRODUCT_CATEGORIES_TABLE_NAME"],
         key={
             'name': {
-                'S': 'test-category'
+                'S': item
             }
         }
     )
@@ -51,4 +53,4 @@ def create_mock_db_with_items():
     populate_db_with_items()
 
 def delete_mock_table():
-    delete_table(table_name=os.environ["PRODUCT_CATEGORIES_TABLE_NAME"])
+    delete_table_from_db(table_name=os.environ["PRODUCT_CATEGORIES_TABLE_NAME"])

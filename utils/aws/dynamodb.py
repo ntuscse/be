@@ -23,7 +23,7 @@ dynamodb = boto3.client(
 )
 
 
-def read_db(table_name, key, pagination=False):
+def read_item_from_db(table_name, key, pagination=False):
     response = dynamodb.get_item(
         TableName=table_name,
         Key=key
@@ -31,18 +31,17 @@ def read_db(table_name, key, pagination=False):
     return response.get('Item')
 
 
-def write_db(table_name, item):
+def write_item_to_db(table_name, item):
     response = dynamodb.put_item(
         TableName=table_name,
         Item=item
     )
     waiter = dynamodb.get_waiter('table_exists')
     waiter.wait(TableName=table_name)
-    print(response)
     return response
 
 
-def update_db(table_name, item):
+def update_item_in_db(table_name, item):
     response = dynamodb.update_item(
         TableName=table_name,
         Item=item
@@ -52,7 +51,7 @@ def update_db(table_name, item):
     return response
 
 
-def delete_db(table_name, key):
+def delete_item_from_db(table_name, key):
     response = dynamodb.delete_item(
         TableName=table_name,
         Key=key
@@ -75,5 +74,5 @@ def create_db(table_name, attribute_definitions, key_schema, provisioned_through
     return table
 
 
-def delete_table(table_name):
+def delete_table_from_db(table_name):
     dynamodb.delete_table(TableName=table_name)
