@@ -1,13 +1,25 @@
 import os
 from fastapi import APIRouter, HTTPException
 from be.api.v1.templates.non_auth_route import create_non_auth_router
+from be.api.v1.models.product import Product
 
 router = APIRouter(prefix="/products")
 
 products = [
-    {"id": "1", "name": "Product 1"},
-    {"id": "2", "name": "Product 2"},
-    {"id": "3", "name": "Product 3"},
+    Product(id="1",
+            name="Product 1",
+            price=12.50,
+            images=[''],
+            sizes=['xs', 's', 'm', 'l'],
+            productCategory='',
+            ),
+    Product(id="2",
+            name="Product 2",
+            price=17.50,
+            images=[''],
+            sizes=['xs', 's', 'm', 'l', 'xl'],
+            productCategory='',
+            ),
 ]
 
 
@@ -22,7 +34,7 @@ async def get_products():
 # gets a single product
 async def get_product(item_id):
     for index, item in enumerate(products):
-        if item['id'] == item_id:
+        if item.id == item_id:
             return item
     raise HTTPException(status_code=404, detail="Product not found")
 
