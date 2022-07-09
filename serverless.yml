@@ -7,11 +7,25 @@ provider:
   region: "ap-southeast-1"
   stage: ${opt:stage, "dev"}
   runtime: python3.9
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "*"
+  environment:
+    PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
 
 plugins:
-  - serverless-offline
+  - serverless-dynamodb-local
   - serverless-python-requirements
   - serverless-lift
+  - serverless-offline # serverless-offline needs to be last in the list
+
 custom:
   pythonRequirements:
     dockerizePip: false
@@ -20,6 +34,19 @@ custom:
     allowCache: true
     useChildProcesses: true
     httpPort: 4000
+  tableNames:
+    productCategoriesTableName: 'productCategoriesTable-${self:provider.stage}'
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+      port: 8011
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      seed: true
+      convertEmptyValues: true
 
 functions:
   root:
@@ -55,6 +82,29 @@ functions:
           method: get
           path: /products/{proxy+}
 
+  getProductCategories:
+    handler: be.api.v1.endpoints.product_categories.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+      
+    events:
+      - http:
+          method: get
+          path: /product-categories
+      - http:
+          method: get
+          path: /product-categories/{proxy+}
+
+  postProductCategories:
+    handler: be.api.v1.endpoints.product_categories.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+      
+    events:
+      - http:
+          method: post
+          path: /product-categories
+
 constructs:
   myTable:
     type: database/dynamodb-single-table
@@ -86,5 +136,19 @@ resources:
         AllowedOAuthScopes: 
           - email
           - openid
-        CallbackURLs: 
+        CallbackURLs:
           - https://google.com
+
+    productCategoriesTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.PRODUCT_CATEGORIES_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
