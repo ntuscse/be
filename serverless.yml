@@ -22,9 +22,10 @@ provider:
 
 plugins:
   - serverless-dynamodb-local
-  - serverless-offline
   - serverless-python-requirements
   - serverless-lift
+  - serverless-offline # serverless-offline needs to be last in the list
+
 custom:
   pythonRequirements:
     dockerizePip: false
@@ -36,6 +37,8 @@ custom:
   tableNames:
     productCategoriesTableName: 'productCategoriesTable-${self:provider.stage}'
   dynamodb:
+    stages:
+      - dev
     start:
       migrate: true
       port: 8011
@@ -44,8 +47,6 @@ custom:
       heapMax: 1g
       seed: true
       convertEmptyValues: true
-    stages:
-      - dev
 
 functions:
   root:

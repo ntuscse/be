@@ -584,6 +584,19 @@ pytest = ">=5.0.0"
 python-dotenv = ">=0.9.1"
 
 [[package]]
+name = "pytest-serverless"
+version = "1.0.0"
+description = "Automatically mocks resources from serverless.yml in pytest using moto."
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+boto3 = ">=1.22,<2.0"
+moto = ">=3.1,<4.0"
+pyyaml = ">=6.0,<7.0"
+
+[[package]]
 name = "pytest-watch"
 version = "4.2.0"
 description = "Local continuous test runner with pytest and watchdog."
@@ -871,7 +884,7 @@ python-versions = ">=3.4"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "795de79febb8cd669bae347e901683ecbaf053893543ec90d67b6db74168e740"
+content-hash = "f062feaa8fe3f60b80dd4dac857e237bc27d7066759a815a748cbf4bf67cc74b"
 
 [metadata.files]
 anyio = [
@@ -1287,6 +1300,10 @@ pytest = [
 pytest-dotenv = [
     {file = "pytest-dotenv-0.5.2.tar.gz", hash = "sha256:2dc6c3ac6d8764c71c6d2804e902d0ff810fa19692e95fe138aefc9b1aa73732"},
     {file = "pytest_dotenv-0.5.2-py3-none-any.whl", hash = "sha256:40a2cece120a213898afaa5407673f6bd924b1fa7eafce6bda0e8abffe2f710f"},
+]
+pytest-serverless = [
+    {file = "pytest-serverless-1.0.0.tar.gz", hash = "sha256:aa221b90a095a62d8dea0f97c74c43be8ad5dc04637b1a82c16ad8a3ed29f7e6"},
+    {file = "pytest_serverless-1.0.0-py3-none-any.whl", hash = "sha256:42be79fadf3696fd1e08a6d34b752f6e7ae86624462ad58e13dfc226a1c70aad"},
 ]
 pytest-watch = [
     {file = "pytest-watch-4.2.0.tar.gz", hash = "sha256:06136f03d5b361718b8d0d234042f7b2f203910d8568f63df2f866b547b3d4b9"},
