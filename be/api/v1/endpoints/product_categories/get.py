@@ -5,9 +5,10 @@ import os
 
 router = APIRouter(prefix="/product-categories")
 
+
 @router.get("/{product_category_name}")
 # Get specific product category
-def get_product_category(product_category_name: str):
+async def get_product_category(product_category_name: str):
     try:
         key = {
             'name': {

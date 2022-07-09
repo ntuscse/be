@@ -6,7 +6,7 @@ from be.api.v1.endpoints.product_categories.test_utils import get_mock_db_item
 
 client = createTestClient(router)
 
-@pytest.mark.usefixtures("provision_mock_db")
+# @pytest.mark.usefixtures("provision_mock_db")
 @mock_dynamodb
 def test_post_product_categories():
     req_body = {

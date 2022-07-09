@@ -12,7 +12,7 @@ class ProductCategory(BaseModel):
 
 @router.post("")
 # Create an item in the product-categories table
-async def create_product_category(product_category: ProductCategory):
+def create_product_category(product_category: ProductCategory):
     item = {
         "name": {
             'S': product_category.name
