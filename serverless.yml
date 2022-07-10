@@ -62,6 +62,24 @@ functions:
           method: get
           path: /
 
+  docs:
+    handler: be.docs.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          path: /docs
+          method: ANY
+          private: false
+      - http:
+          path: /openapi.json
+          method: ANY
+          private: false
+      - http:
+          path: /redoc
+          method: ANY
+          private: false
+
   getUsers:
     handler: be.api.v1.endpoints.users.get.handler
     environment:

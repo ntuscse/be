@@ -7,7 +7,7 @@ router = APIRouter(prefix="/products")
 
 @router.get("")
 # gets all products
-async def root():
+async def get_products():
     return {
         "products": [
             {"id": "1", "name": "Product 1"},
@@ -19,7 +19,7 @@ async def root():
 
 @router.get("/{item_id}")
 # gets a single product
-async def product(item_id):
+async def get_a_product(item_id):
     return {"id": item_id, "name": "Product " + item_id}
 
 
