@@ -1,6 +1,9 @@
 service: be
 package:
   individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!venv/**'
 provider:
   name: aws
   profile: ${opt:aws-profile, "ntuscse"}
@@ -16,6 +19,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
       Resource: "*"
   environment:
     PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
