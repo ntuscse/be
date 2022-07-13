@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - feat/deploy-to-dev
   workflow_dispatch:
 
 permissions:
