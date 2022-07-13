@@ -8,6 +8,7 @@ provider:
   name: aws
   profile: ${opt:aws-profile, "ntuscse"}
   region: "ap-southeast-1"
+  apiName: be
   stage: ${opt:stage, "dev"}
   runtime: python3.9
   iamRoleStatements:
@@ -44,11 +45,10 @@ custom:
     stages:
       - dev
     start:
-      migrate: true
+      docker: true
       port: 8011
       inMemory: true
-      heapInitial: 200m
-      heapMax: 1g
+      migrate: true
       seed: true
       convertEmptyValues: true
 
@@ -108,7 +108,6 @@ functions:
     handler: be.api.v1.endpoints.product_categories.get.handler
     environment:
       STAGE: ${self:provider.stage}
-      
     events:
       - http:
           method: get

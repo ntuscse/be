@@ -5,7 +5,7 @@ from be.api.v1.templates.non_auth_route import create_non_auth_router
 router = APIRouter(prefix="/products")
 
 
-@router.get("")
+@router.get("", tags=["merchandise"])
 # gets all products
 async def get_products():
     return {
