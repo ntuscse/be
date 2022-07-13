@@ -45,10 +45,11 @@ custom:
     stages:
       - dev
     start:
-      docker: true
+      migrate: true
       port: 8011
       inMemory: true
-      migrate: true
+      heapInitial: 200m
+      heapMax: 1g
       seed: true
       convertEmptyValues: true
 
