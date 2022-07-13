@@ -12,7 +12,7 @@ permissions:
   id-token: write # allows writing openid token for aws
 
 jobs:
-  Explore-GitHub-Actions:
+  deploy-dev:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repo
@@ -48,4 +48,5 @@ jobs:
 
       - name: Deploy to AWS
         run: |
+          npm i -g serverless
           sls deploy --stage dev

@@ -1,1 +1,16 @@
 # sls deploy --stage prod
+
+name: Deploy (prod)
+
+on:
+  push:
+    branches:
+      - production
+  workflow_dispatch:
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
