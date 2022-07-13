@@ -12,7 +12,7 @@
     "test:py": "poetry run pytest --import-mode importlib",
     "lint": "poetry run pylint --fail-under=8 be",
     "test:watch": "poetry run pytest-watch -- --import-mode importlib",
-    "deploy": "sls deploy --verbose --force",
+    "deploy": "sls deploy --verbose",
     "postinstall": "run-script-os",
     "postinstall:win32": "patch-package",
     "postinstall:default": "echo \"Your OS doesn't need to patch node_modules. Skipping.\""
