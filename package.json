@@ -4,9 +4,9 @@
   "description": "Serverless backend",
   "main": "index.js",
   "scripts": {
-    "setup": "npm install && poetry install",
+    "setup": "npm install && sls dynamodb install && poetry install",
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
-    "offline:dynamodb": "sls dynamodb start --docker --port 8011 --migrate --inMemory --seed --convertEmptyValues",
+    "offline:dynamodb": "sls dynamodb start --port 8011 --migrate --inMemory --heapInitial 200m --heapMax 1g --seed --convertEmptyValues",
     "test": "concurrently -n dynamodb-offline,pytest --kill-others --success first \"npm run offline:dynamodb\" \"npm run test:py\"",
     "test:py": "poetry run pytest --import-mode importlib",
     "lint": "poetry run pylint --fail-under=8 be",
@@ -28,10 +28,9 @@
   "devDependencies": {
     "@aws-cdk/cloud-assembly-schema": "^1.142.0",
     "concurrently": "^7.2.2",
-    "dynamodb-migrations": "^0.0.10",
     "patch-package": "^6.4.7",
     "run-script-os": "^1.1.6",
-    "serverless-dynamodb-local": "git+ssh://git@github.com:99x/serverless-dynamodb-local.git",
+    "serverless-dynamodb-local": "^0.2.40",
     "serverless-lift": "^1.12.0",
     "serverless-offline": "^8.4.0",
     "serverless-python-requirements": "^5.3.1"
