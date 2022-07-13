@@ -48,12 +48,21 @@ jobs:
       - name: Install dependencies
         run: npm run setup:cd
 
-      - name: Deploy to AWS
+      - name: Setup Serverless
         run: |
           npm i -g serverless
           serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --profile github_actions
+          
+
+      - name: Debug AWS
+        run: |
+          echo $(aws sts get-caller-identity)
           aws configure list
           aws configure list --profile github_actions
           export AWS_PROFILE=github_actions
           echo $(aws sts get-caller-identity)
+          echo $(aws lambda list-functions)
+
+      - name: Deploy to AWS
+        run: |
           npm run deploy -- --stage dev --aws-profile github_actions
