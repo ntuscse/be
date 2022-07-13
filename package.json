@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install && sls dynamodb install && poetry install",
-    "setup:cd": "npm install && poetry install --no-dev",
+    "setup:cd": "npm install --production && poetry install --no-dev",
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
     "offline:dynamodb": "sls dynamodb start --port 8011 --migrate --inMemory --heapInitial 200m --heapMax 1g --seed --convertEmptyValues",
     "test": "concurrently -n dynamodb-offline,pytest --kill-others --success first \"npm run offline:dynamodb\" \"npm run test:py\"",
@@ -30,14 +30,14 @@
   "devDependencies": {
     "@aws-cdk/cloud-assembly-schema": "^1.142.0",
     "concurrently": "^7.2.2",
-    "patch-package": "^6.4.7",
-    "run-script-os": "^1.1.6",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-lift": "^1.12.0",
     "serverless-offline": "^8.4.0",
     "serverless-python-requirements": "^5.3.1"
   },
   "dependencies": {
+    "run-script-os": "^1.1.6",
+    "patch-package": "^6.4.7",
     "serverless": "^3.19.0"
   }
 }
