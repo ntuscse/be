@@ -42,6 +42,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::188191680553:role/github_actions
           aws-region: ap-southeast-1
+          role-session-name: be-deploy-dev
 
       - name: Install dependencies
         run: npm run setup
@@ -49,4 +50,4 @@ jobs:
       - name: Deploy to AWS
         run: |
           npm i -g serverless
-          sls deploy --stage dev
+          npm run deploy -- --stage dev --aws-profile default
