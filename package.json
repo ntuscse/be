@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install && sls dynamodb install && poetry install",
-    "setup:cd": "npm install --production && poetry install --no-dev",
+    "setup:cd": "npm install && poetry install --no-dev",
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
     "offline:dynamodb": "sls dynamodb start --port 8011 --migrate --inMemory --heapInitial 200m --heapMax 1g --seed --convertEmptyValues",
     "test": "concurrently -n dynamodb-offline,pytest --kill-others --success first \"npm run offline:dynamodb\" \"npm run test:py\"",
