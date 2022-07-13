@@ -50,4 +50,5 @@ jobs:
       - name: Deploy to AWS
         run: |
           npm i -g serverless
-          npm run deploy -- --stage dev --aws-profile default
+          serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --profile github_actions
+          npm run deploy -- --stage dev --aws-profile github_actions
