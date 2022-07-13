@@ -55,4 +55,5 @@ jobs:
           aws configure list
           aws configure list --profile github_actions
           export AWS_PROFILE=github_actions
+          echo $(aws sts get-caller-identity)
           npm run deploy -- --stage dev --aws-profile github_actions
