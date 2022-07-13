@@ -53,4 +53,6 @@ jobs:
           npm i -g serverless
           serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --profile github_actions
           aws configure list
+          aws configure list --profile github_actions
+          export AWS_PROFILE=github_actions
           npm run deploy -- --stage dev --aws-profile github_actions
