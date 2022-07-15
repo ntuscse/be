@@ -3,10 +3,10 @@ package:
   individually: true
   patterns:
     - '!node_modules/**'
-    - '!venv/**'
+    - '!.venv/**'
 provider:
   name: aws
-  profile: ${opt:aws-profile, "ntuscse"}
+#  profile: ${opt:aws-profile, "ntuscse"}
   region: "ap-southeast-1"
   apiName: be
   stage: ${opt:stage, "dev"}
