@@ -69,11 +69,11 @@ jobs:
 
       - name: Deploy to AWS
         run: |
-          serverless package --package serverless-artifacts
-#          npm run deploy -- --stage dev --aws-profile github_actions
+#          serverless package --package serverless-artifacts
+          npm run deploy -- --stage dev --aws-profile github_actions
 
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: serverless-artifacts
-          path: ./serverless-artifacts
+          path: ./serverless
