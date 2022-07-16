@@ -1,3 +1,4 @@
+from os import makedirs
 from os.path import join, dirname
 from fastapi.openapi.utils import get_openapi
 import json
@@ -7,7 +8,10 @@ load_dotenv(join(dirname(__file__), '..', '.test.env'))
 
 from be.docs import app
 
-with open('openapi.json', 'w') as f:
+filePath = join(dirname(__file__), '..', 'out', 'openapi.json')
+makedirs(dirname(filePath), exist_ok=True)
+
+with open(filePath, 'w') as f:
     json.dump(get_openapi(
         title=app.title,
         version=app.version,
