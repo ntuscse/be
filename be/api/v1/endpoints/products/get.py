@@ -7,8 +7,10 @@ from be.api.v1.models.product import Product
 
 router = APIRouter(prefix="/products", tags=["merchandise"])
 
+
 class GetProductsResponseModel(BaseModel):
     products: list[Product]
+
 
 @router.get("", response_model=GetProductsResponseModel)
 # gets all products
