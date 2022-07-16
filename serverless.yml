@@ -70,16 +70,13 @@ functions:
     events:
       - http:
           path: /docs
-          method: ANY
-          private: false
+          method: get
       - http:
           path: /openapi.json
-          method: ANY
-          private: false
+          method: get
       - http:
           path: /redoc
-          method: ANY
-          private: false
+          method: get
 
   getUsers:
     handler: be.api.v1.endpoints.users.get.handler

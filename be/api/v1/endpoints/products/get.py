@@ -1,26 +1,31 @@
-from fastapi import APIRouter
+# import os
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from be.api.v1.templates.non_auth_route import create_non_auth_router
+from be.api.v1.endpoints.products.data import products
+from be.api.v1.models.product import Product
+
+router = APIRouter(prefix="/products", tags=["merchandise"])
 
 
-router = APIRouter(prefix="/products")
+class GetProductsResponseModel(BaseModel):
+    products: list[Product]
 
 
-@router.get("", tags=["merchandise"])
+@router.get("", response_model=GetProductsResponseModel)
 # gets all products
 async def get_products():
-    return {
-        "products": [
-            {"id": "1", "name": "Product 1"},
-            {"id": "2", "name": "Product 2"},
-            {"id": "3", "name": "Product 3"},
-        ]
-    }
+    # table_name = os.environ.get("PRODUCTS_TABLE_NAME")
+    return {"products": products}
 
 
-@router.get("/{item_id}")
+@router.get("/{item_id}", response_model=Product)
 # gets a single product
-async def get_a_product(item_id):
-    return {"id": item_id, "name": "Product " + item_id}
+async def get_product(item_id: int):
+    for _index, item in enumerate(products):
+        if item.id == str(item_id):
+            return item
+    raise HTTPException(status_code=404, detail="Product not found")
 
 
 handler = create_non_auth_router(router)

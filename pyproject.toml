@@ -11,6 +11,7 @@ mangum = "^0.12.3"
 boto3 = "^1.20.46"
 fastapi = "^0.73.0"
 requests = "^2.27.1"
+pydantic = "^1.9.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
@@ -24,9 +25,3 @@ uvicorn = {extras = ["standard"], version = "^0.17.1"}
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-env_files = [
-    '.env',
-    '.test.env',
-]

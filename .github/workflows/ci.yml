@@ -97,5 +97,5 @@ jobs:
       - name: Install dependencies
         run: npm run setup
 
-      - name: Pytest
+      - name: Pylint
         run: npm run lint
