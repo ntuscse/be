@@ -5,5 +5,9 @@ __pycache__/
 node_modules/
 .serverless/
 
+# python local
 .dynamodb/
 .env
+
+# generated
+/openapi.json
