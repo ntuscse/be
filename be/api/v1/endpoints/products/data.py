@@ -6,7 +6,8 @@ products = [
         name="Oversized Crew Neck Short Sleeve T-Shirt",
         price=22.90,
         images=[
-            "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/451406/item/sggoods_09_451406.jpg?width=1008&impolicy=quality_75"
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/451406/item/"
+             "sggoods_09_451406.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l"],
         productCategory="t-shirt",
@@ -16,8 +17,9 @@ products = [
         name="AIRism Cotton UV Protection Crew Neck Long Sleeve T-Shirt",
         price=19.90,
         images=[
-            "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/433037/item/sggoods_67_433037.jpg?width=1008&impolicy=quality_75"
-        ],
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/433037/item/"
+             "sggoods_67_433037.jpg?width=1008&impolicy=quality_75"
+    )],
         sizes=["xs", "s", "m", "l", "xl"],
         productCategory="t-shirt",
     ),
@@ -26,7 +28,8 @@ products = [
         name="Square Neck Short Sleeve Cropped T-Shirt",
         price=14.90,
         images=[
-            "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/452928/item/sggoods_47_452928.jpg?width=1008&impolicy=quality_75"
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/452928/item/"
+             "sggoods_47_452928.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l", "xl"],
         productCategory="t-shirt",
@@ -36,7 +39,8 @@ products = [
         name="Uniqlo U Crew Neck Short Sleeve T-Shirt",
         price=14.90,
         images=[
-            "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/424873/item/sggoods_55_424873.jpg?width=1008&impolicy=quality_75"
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/424873/item/"
+             "sggoods_55_424873.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l", "xl"],
         productCategory="t-shirt",
@@ -46,7 +50,8 @@ products = [
         name="Art Icons UT (Short Sleeve Graphic T-Shirt)",
         price=18.90,
         images=[
-            "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/424873/item/sggoods_55_424873.jpg?width=1008&impolicy=quality_75"
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/424873/item/"
+             "sggoods_55_424873.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l", "xl"],
         productCategory="t-shirt",
@@ -56,7 +61,8 @@ products = [
         name="Middle Gauge Knitted Crew Neck Vest",
         price=29.90,
         images=[
-            "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/451613/item/sggoods_32_451613.jpg?width=1008&impolicy=quality_75"
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/451613/item/"
+             "sggoods_32_451613.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l", "xl"],
         productCategory="sweater",
@@ -65,7 +71,10 @@ products = [
         id="7",
         name="Peanuts Sunday Specials UT (Short Sleeve Graphic T-Shirt)",
         price=14.90,
-        images=["Peanuts Sunday Specials UT (Short Sleeve Graphic T-Shirt)"],
+        images=[
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/447871/item/"
+             "sggoods_40_447871.jpg?width=1600&impolicy=quality_75")
+        ],
         sizes=["xs", "s", "m", "l", "xl"],
         productCategory="sweater",
     ),
@@ -74,7 +83,8 @@ products = [
         name="Cotton Blend Parka",
         price=59.90,
         images=[
-            "https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/445135/item/sggoods_30_445135.jpg?width=1008&impolicy=quality_75"
+            ("https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/445135/item/"
+             "sggoods_30_445135.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l", "xl"],
         productCategory="sweater",
