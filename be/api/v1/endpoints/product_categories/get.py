@@ -10,11 +10,7 @@ router = APIRouter(prefix="/product-categories")
 # Get specific product category
 async def get_product_category(product_category_name: str):
     try:
-        key = {
-            'name': {
-                'S': product_category_name
-            }
-        }
+        key = {"name": {"S": product_category_name}}
         table_name = os.environ["PRODUCT_CATEGORIES_TABLE_NAME"]
         response = read_item_from_db(table_name, key)
         if not response:
@@ -22,7 +18,7 @@ async def get_product_category(product_category_name: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
 
-    return {'product_category': {'name': response['name']['S']}}
+    return {"product_category": {"name": response["name"]["S"]}}
 
 
 handler = create_non_auth_router(router)

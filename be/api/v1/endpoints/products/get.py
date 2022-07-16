@@ -10,7 +10,7 @@ router = APIRouter(prefix="/products")
 # gets all products
 async def get_products():
     # table_name = os.environ.get("PRODUCTS_TABLE_NAME")
-    return {'products': products}
+    return {"products": products}
 
 
 @router.get("/{item_id}")

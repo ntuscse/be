@@ -16,11 +16,7 @@ class ProductCategory(BaseModel):
 @router.post("")
 # Create an item in the product-categories table
 def create_product_category(product_category: ProductCategory):
-    item = {
-        "name": {
-            'S': product_category.name
-        }
-    }
+    item = {"name": {"S": product_category.name}}
     write_item_to_db(table_name, item)
     return {
         "status": "Product category successfully created",

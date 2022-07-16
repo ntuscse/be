@@ -11,13 +11,14 @@ client = createTestClient(router)
 def test_get_products():
     response = client.get("/products")
     assert response.status_code == 200
-    assert response.json() == {'products': products}
+    assert response.json() == {"products": products}
 
 
 def test_get_product_200():
     response = client.get("/products/2")
     assert response.status_code == 200
     assert response.json() == products[1]
+
 
 def test_get_product_404():
     with raises(HTTPException) as err:
