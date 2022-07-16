@@ -13,6 +13,7 @@
     "test:py": "poetry run pytest --import-mode importlib -vv",
     "test:py:watch": "poetry run pytest-watch -- --import-mode importlib -vv",
     "lint": "poetry run pylint --fail-under=8 be",
+    "lint:fix": "poetry run black be/",
     "deploy": "sls deploy --verbose",
     "postinstall": "run-script-os",
     "postinstall:win32": "patch-package",

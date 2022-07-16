@@ -14,7 +14,6 @@ products = [
             images=['https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/433037/item/sggoods_67_433037.jpg?width=1008&impolicy=quality_75'],
             sizes=['xs', 's', 'm', 'l', 'xl'],
             productCategory='t-shirt',
-
             ),
     Product(id="3",
             name="Square Neck Short Sleeve Cropped T-Shirt",
