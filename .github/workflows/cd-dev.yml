@@ -54,3 +54,14 @@ jobs:
       - name: Deploy to AWS
         run: |
           npm run deploy -- --stage dev --aws-profile github_actions
+
+      - name: Generate and deploy docs
+        run: |
+          poetry run python be/docs_generate.py
+          cp out/openapi.json docs_server/swagger/
+          cd docs_server/swagger/
+          npm i -g vercel
+          vercel --prod --token ${{ secrets.VERCEL_AUTH_TOKEN }}
+          
+          
+          

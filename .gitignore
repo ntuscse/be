@@ -5,5 +5,10 @@ __pycache__/
 node_modules/
 .serverless/
 
+# python local
 .dynamodb/
 .env
+
+# generated
+out/
+docs_server/swagger/openapi.json
