@@ -23,7 +23,7 @@ async def get_products():
 # gets a single product
 async def get_product(item_id: int):
     for _index, item in enumerate(products):
-        if item.id == item_id:
+        if item.id == str(item_id):
             return item
     raise HTTPException(status_code=404, detail="Product not found")
 
