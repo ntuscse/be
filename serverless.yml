@@ -98,9 +98,11 @@ functions:
       - http:
           method: get
           path: /products
+          cors: true
       - http:
           method: get
           path: /products/{proxy+}
+          cors: true
 
   getProductCategories:
     handler: be.api.v1.endpoints.product_categories.get.handler
