@@ -1,12 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
+import os
+
+is_offline = os.environ.get('IS_OFFLINE')
 
 origins = [
+    "http://localhost:4000",
+] if is_offline else [
     "https://api.ntuscse.com",
     "https://api.dev.ntuscse.com",
-    "http://localhost",
-    "http://localhost:4000",
 ]
 
 
