@@ -46,6 +46,13 @@ jobs:
       - name: Install dependencies
         run: npm run setup:cd
 
+      - name: Cache Serverless
+        id: cd-dev-cache-serverless
+        uses: actions/cache@v3
+        with:
+          path: .serverless
+          key: cd-dev-${{ runner.os }}-serverless
+
       - name: Setup Serverless
         run: |
           npm i -g serverless
