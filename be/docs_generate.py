@@ -15,7 +15,7 @@ makedirs(dirname(filePath), exist_ok=True)
 base_api_server_url: str = os.getenv('BASE_API_SERVER_URL')
 
 with open(filePath, 'w') as f:
-    json.dump(get_openapi(
+    openapi_schema = get_openapi(
         title=app.title,
         version=app.version,
         openapi_version=app.openapi_version,
@@ -23,4 +23,10 @@ with open(filePath, 'w') as f:
         routes=app.routes,
         servers=[{"url": base_api_server_url}]
         # openapi_prefix=app.openapi_prefix,
-    ), f)
+    )
+
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://www.datocms-assets.com/31049/1618983297-powered-by-vercel.svg"
+    }
+
+    json.dump(openapi_schema, f)
