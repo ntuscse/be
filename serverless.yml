@@ -30,6 +30,7 @@ plugins:
   - serverless-dynamodb-local
   - serverless-python-requirements
   - serverless-lift
+  - serverless-dotenv-plugin
   - serverless-offline # serverless-offline needs to be last in the list
 
 custom:
@@ -121,11 +122,20 @@ functions:
     handler: be.api.v1.endpoints.product_categories.post.handler
     environment:
       STAGE: ${self:provider.stage}
-      
     events:
       - http:
           method: post
           path: /product-categories
+
+  postPaymentsIntent:
+    handler: be.api.v1.endpoints.payments.intent.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: post
+          path: /payments/intent
+          cors: true
 
 constructs:
   myTable:

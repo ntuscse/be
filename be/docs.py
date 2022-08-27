@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from dotenv import load_dotenv
 
-load_dotenv(join(dirname(__file__), '..', '.test.env'))
+load_dotenv(join(dirname(__file__), '..', '.env.test'))
 base_api_server_url: str = os.getenv('BASE_API_SERVER_URL')
 
 from be.api.v1.endpoints.products.get import router as v1_products_get
