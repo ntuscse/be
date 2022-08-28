@@ -135,6 +135,7 @@ functions:
       - http:
           method: post
           path: /checkout
+          cors: true
 
   postPaymentsIntent:
     handler: be.api.v1.endpoints.payments.intent.post.handler
