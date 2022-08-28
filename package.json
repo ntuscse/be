@@ -32,14 +32,15 @@
   "devDependencies": {
     "@aws-cdk/cloud-assembly-schema": "^1.142.0",
     "concurrently": "^7.2.2",
+    "serverless-dotenv-plugin": "^4.0.2",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-lift": "^1.12.0",
     "serverless-offline": "^8.4.0",
     "serverless-python-requirements": "^5.3.1"
   },
   "dependencies": {
-    "run-script-os": "^1.1.6",
     "patch-package": "^6.4.7",
+    "run-script-os": "^1.1.6",
     "serverless": "^3.19.0"
   }
 }
