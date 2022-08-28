@@ -127,6 +127,15 @@ functions:
           method: post
           path: /product-categories
 
+  postCheckout:
+    handler: be.api.v1.endpoints.checkout.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: post
+          path: /checkout
+
   postPaymentsIntent:
     handler: be.api.v1.endpoints.payments.intent.post.handler
     environment:
