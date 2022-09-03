@@ -127,14 +127,24 @@ functions:
           method: post
           path: /product-categories
 
-  postCheckout:
-    handler: be.api.v1.endpoints.checkout.post.handler
+  postCartQuotation:
+    handler: be.api.v1.endpoints.cart.quotation.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /cart/quotaion
+          cors: true
+
+  postCartCheckout:
+    handler: be.api.v1.endpoints.cart.checkout.post.handler
     environment:
       STAGE: ${self:provider.stage}
     events:
       - http:
           method: post
-          path: /checkout
+          path: /cart/checkout
           cors: true
 
   postPaymentsIntent:
