@@ -127,7 +127,7 @@ functions:
           method: post
           path: /product-categories
 
-  postCartQuotation:
+  getCartQuotation:
     handler: be.api.v1.endpoints.cart.quotation.get.handler
     environment:
       STAGE: ${self:provider.stage}
