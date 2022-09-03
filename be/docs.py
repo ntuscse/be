@@ -22,6 +22,7 @@ from be.api.v1.endpoints.product_categories.delete import (
 )
 
 from be.api.v1.endpoints.payments.intent.post import router as v1_payments_intent_post
+from be.api.v1.endpoints.cart.quotation.get import router as v1_cart_quotatiun_post
 from be.api.v1.endpoints.cart.checkout.post import router as v1_checkout_post
 
 tags_metadata = [
@@ -48,6 +49,7 @@ app.include_router(v1_product_categories_post)
 app.include_router(v1_product_categories_delete)
 
 app.include_router(v1_payments_intent_post)
+app.include_router(v1_cart_quotatiun_post)
 app.include_router(v1_checkout_post)
 
 
