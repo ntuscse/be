@@ -1,10 +1,10 @@
 from utils.test_app import createTestClient
-from be.api.v1.endpoints.checkout.post import router
+from be.api.v1.endpoints.cart.checkout.post import router
 
 client = createTestClient(router)
 
 
-def test_post_checkout():
+def test_post_cart_checkout():
     req_body = {
         "items": [
             {
@@ -13,7 +13,7 @@ def test_post_checkout():
             }
         ]
     }
-    response = client.post("/checkout", json=req_body)
+    response = client.post("/cart/checkout", json=req_body)
     assert response.status_code == 200
     assert response.json()['items'] == [{
             'id': '1',
