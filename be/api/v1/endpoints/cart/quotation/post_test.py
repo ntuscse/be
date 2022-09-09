@@ -1,10 +1,10 @@
 from utils.test_app import createTestClient
-from be.api.v1.endpoints.cart.quotation.get import router
+from be.api.v1.endpoints.cart.quotation.post import router
 
 client = createTestClient(router)
 
 
-def test_get_cart_quotation():
+def test_post_cart_quotation():
     req_body = {
         "items": [
             {
@@ -13,7 +13,7 @@ def test_get_cart_quotation():
             }
         ]
     }
-    response = client.get("/cart/quotation", json=req_body)
+    response = client.post("/cart/quotation", json=req_body)
     assert response.status_code == 200
     assert response.json() == {
         "items": [{

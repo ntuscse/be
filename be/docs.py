@@ -22,7 +22,7 @@ from be.api.v1.endpoints.product_categories.delete import (
 )
 
 from be.api.v1.endpoints.payments.intent.post import router as v1_payments_intent_post
-from be.api.v1.endpoints.cart.quotation.get import router as v1_cart_quotatiun_post
+from be.api.v1.endpoints.cart.quotation.post import router as v1_cart_quotation_post
 from be.api.v1.endpoints.cart.checkout.post import router as v1_checkout_post
 
 tags_metadata = [
@@ -49,7 +49,7 @@ app.include_router(v1_product_categories_post)
 app.include_router(v1_product_categories_delete)
 
 app.include_router(v1_payments_intent_post)
-app.include_router(v1_cart_quotatiun_post)
+app.include_router(v1_cart_quotation_post)
 app.include_router(v1_checkout_post)
 
 
@@ -62,7 +62,7 @@ def custom_openapi():
         openapi_version=app.openapi_version,
         description=app.description,
         routes=app.routes,
-        servers=[{"url": base_api_server_url}]
+        servers=[{"url": base_api_server_url}, {"url": "http://localhost:4000"}]
         # openapi_prefix=app.openapi_prefix,
     )
     # openapi_schema["info"]["x-logo"] = {
