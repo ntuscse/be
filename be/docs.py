@@ -62,7 +62,7 @@ def custom_openapi():
         openapi_version=app.openapi_version,
         description=app.description,
         routes=app.routes,
-        servers=[{"url": base_api_server_url}]
+        servers=[{"url": base_api_server_url}, {"url": "http://localhost:4000"}]
         # openapi_prefix=app.openapi_prefix,
     )
     # openapi_schema["info"]["x-logo"] = {
