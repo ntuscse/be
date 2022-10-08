@@ -25,6 +25,7 @@ provider:
   environment:
     SERVERLESS_STAGE: ${opt:stage, "dev"}
     PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
+    PRODUCTS_TABLE_NAME: ${self:custom.tableNames.productsTableName}
 
 plugins:
   - serverless-dynamodb-local
@@ -42,7 +43,8 @@ custom:
     useChildProcesses: true
     httpPort: 4000
   tableNames:
-    productCategoriesTableName: 'productCategoriesTable-${self:provider.stage}'
+    productCategoriesTableName: 'be-${self:provider.stage}-product_categories'
+    productsTableName: 'be-${self:provider.stage}-products'
   dynamodb:
     stages:
       - dev
@@ -158,9 +160,10 @@ functions:
           cors: true
 
 constructs:
-  myTable:
+  be-dev-product_categories:
     type: database/dynamodb-single-table
-
+  be-dev-products:
+    type: database/dynamodb-single-table
 
 resources:
   Resources:
