@@ -51,8 +51,8 @@ def calc_cart_value(cart_order_items: list[OrderItem]):
     grand_total = subtotal
 
     return PriceModel(
-        currency = 'sgd',
-        subtotal = subtotal,
-        discount = 0, # todo
-        grandTotal = grand_total
+        currency='sgd',
+        subtotal=subtotal,
+        discount=0,  # todo
+        grandTotal=grand_total
     )
