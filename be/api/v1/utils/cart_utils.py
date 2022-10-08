@@ -18,7 +18,8 @@ def generate_order_items_from_cart(cart: Cart):
                 sizes=product.sizes,
                 productCategory=product.productCategory,
                 isAvailable=product.isAvailable,
-                quantity=i.quantity
+                quantity=i.quantity,
+                size=i.size,
             ))
     return cart_order_items
 
