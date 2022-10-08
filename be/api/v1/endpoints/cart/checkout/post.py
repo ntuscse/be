@@ -11,6 +11,9 @@ stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 
 router = APIRouter(prefix="/cart/checkout", tags=["cart"])
 
+class CheckoutRequestBodyModel(Cart):
+    email: str
+
 class PaymentModel(BaseModel):
     paymentGateway: str
     clientSecret: str
@@ -23,19 +26,25 @@ class PostCheckoutResponseModel(BaseModel):
 
 @router.post("", response_model=PostCheckoutResponseModel)
 # Create an order with status payment-processing
-async def post_checkout(cart: Cart):
+async def post_checkout(req: CheckoutRequestBodyModel):
     try:
         # calculate subtotal
-        items_products = generate_order_items_from_cart(cart)
+        items_products = generate_order_items_from_cart(req)
 
         price = calc_cart_value(items_products)
+
+        # todo: rng order_id here
+        # todo: create "pending" order here - in db
+
 
         payment_intent = stripe.PaymentIntent.create(
             payment_method_types=["paynow"],
             payment_method_data={"type": "paynow"},
             amount=int(price.grandTotal * 100), # stripe payment amounts are in cents
-            currency="sgd"
+            currency="sgd",
+            # setup_future_usage="on_session", # cannot be used with paynow
         )
+
 
         return {
             "items": items_products,
@@ -43,7 +52,8 @@ async def post_checkout(cart: Cart):
             "payment": {
                 "paymentGateway": 'stripe',
                 "clientSecret": payment_intent.client_secret
-            }
+            },
+            "email": req.email
         }
 
 

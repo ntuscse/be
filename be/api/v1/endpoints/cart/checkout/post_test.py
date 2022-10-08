@@ -6,6 +6,7 @@ client = createTestClient(router)
 
 def test_post_cart_checkout():
     req_body = {
+        "email": "test@example.com",
         "items": [
             {
                 "productId": 1,
