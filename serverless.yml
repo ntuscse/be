@@ -159,12 +159,6 @@ functions:
           path: /payments/intent
           cors: true
 
-constructs:
-  be-dev-product_categories:
-    type: database/dynamodb-single-table
-  be-dev-products:
-    type: database/dynamodb-single-table
-
 resources:
   Resources:
     CognitoUserPool:
@@ -203,6 +197,20 @@ resources:
             AttributeType: S
         KeySchema:
           - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    productsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.PRODUCTS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1

@@ -6,7 +6,7 @@ from utils.aws.dynamodb import (
     write_item_to_db, read_all_items_from_db
 )
 
-table_name = os.environ["PRODUCT_TABLE_NAME"]
+table_name = os.environ["PRODUCTS_TABLE_NAME"]
 
 
 def dal_create_product(self, product: Product):

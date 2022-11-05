@@ -17,9 +17,10 @@ class GetProductsResponseModel(BaseModel):
 # gets all products
 async def get_products():
     # table_name = os.environ.get("PRODUCTS_TABLE_NAME")
-    return {"products": [
-        dal_read_products()
-    ]}
+    products_list = dal_read_products()
+    print('products', products_list)
+
+    return {"products": products_list}
 
 
 @router.get("/{item_id}", response_model=Product)
