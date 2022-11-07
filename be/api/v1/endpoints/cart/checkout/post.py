@@ -6,7 +6,7 @@ import stripe
 from be.api.v1.templates.non_auth_route import create_non_auth_router
 from be.api.v1.models.cart import PriceModel, Cart
 from be.api.v1.models.orders import OrderItem
-from be.api.v1.utils.cart_utils import calc_cart_value, generate_order_items_from_cart
+from be.api.v1.utils.cart_utils import calc_cart_value, describe_cart, generate_order_items_from_cart
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
 
@@ -31,11 +31,18 @@ class PostCheckoutResponseModel(BaseModel):
 @router.post("", response_model=PostCheckoutResponseModel)
 # Create an order with status payment-processing
 async def post_checkout(req: CheckoutRequestBodyModel):
+    if not req.email:
+        raise HTTPException(status_code=400, detail="Billing email must be provided when checking out")
+
+    if not len(req.items):
+        raise HTTPException(status_code=400, detail="Cart must not be empty when checking out")
+
     try:
         # calculate subtotal
         items_products = generate_order_items_from_cart(req)
 
         price = calc_cart_value(items_products)
+        description = describe_cart(items_products)
 
         # todo: create "pending" order here - in db
         order_id = uuid.uuid4()
@@ -43,9 +50,10 @@ async def post_checkout(req: CheckoutRequestBodyModel):
         payment_intent = stripe.PaymentIntent.create(
             payment_method_types=["paynow"],
             payment_method_data={"type": "paynow"},
-            amount=int(price.grandTotal * 100),  # stripe payment amounts are in cents
+            amount=int(price.grandTotal * 100), # stripe payment amounts are in cents
             currency="sgd",
-            # setup_future_usage="on_session", # cannot be used with paynow
+            receipt_email=req.email,
+            description=f"SCSE Merch Purchase:\n{description}"
         )
 
         return {
@@ -53,7 +61,7 @@ async def post_checkout(req: CheckoutRequestBodyModel):
             "items": items_products,
             "price": price,
             "payment": {
-                "paymentGateway": 'stripe',
+                "paymentGateway": "stripe",
                 "clientSecret": payment_intent.client_secret
             },
             "email": req.email

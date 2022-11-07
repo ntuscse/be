@@ -57,3 +57,15 @@ def calc_cart_value(cart_order_items: list[OrderItem]):
         discount=0,  # todo
         grandTotal=grand_total
     )
+
+def describe_cart(cart_order_items: list[OrderItem]):
+    entries = []
+    for entry in cart_order_items:
+        price = entry.price * entry.quantity
+
+        name = entry.name
+        if entry.size:
+            name = f'{entry.name} (Size: {entry.size.upper()})'
+        entries.append(f'{name} x{entry.quantity} - S${price:.2f}')
+
+    return '\n'.join(entries)
