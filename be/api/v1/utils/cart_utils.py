@@ -18,7 +18,8 @@ def generate_order_items_from_cart(cart: Cart):
                 sizes=product.sizes,
                 productCategory=product.productCategory,
                 isAvailable=product.isAvailable,
-                quantity=i.quantity
+                quantity=i.quantity,
+                size=i.size,
             ))
     return cart_order_items
 
@@ -51,8 +52,8 @@ def calc_cart_value(cart_order_items: list[OrderItem]):
     grand_total = subtotal
 
     return PriceModel(
-        currency = 'sgd',
-        subtotal = subtotal,
-        discount = 0, # todo
-        grandTotal = grand_total
+        currency='sgd',
+        subtotal=subtotal,
+        discount=0,  # todo
+        grandTotal=grand_total
     )

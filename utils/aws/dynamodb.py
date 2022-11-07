@@ -1,4 +1,5 @@
 import boto3
+from boto3.dynamodb.conditions import Key
 import os
 from botocore.config import Config
 from dotenv import load_dotenv
@@ -16,12 +17,15 @@ dynamodb_args = {
 
 }
 
-dynamodb = boto3.client(
+dynamodb = boto3.resource(
     'dynamodb',
     region_name='ap-southeast-1',
     **dynamodb_args
 )
 
+######
+# reference : https://dynobase.dev/dynamodb-python-with-boto3
+#####
 
 def read_item_from_db(table_name, key, pagination=False):
     response = dynamodb.get_item(
@@ -29,6 +33,18 @@ def read_item_from_db(table_name, key, pagination=False):
         Key=key
     )
     return response.get('Item')
+
+def read_all_items_from_db(tableName, pagination=False):
+    table = dynamodb.Table(tableName)
+    response = table.scan()
+
+    data = response['Items']
+
+    while 'LastEvaluatedKey' in response:
+        response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+        data.extend(response['Items'])
+
+    return data
 
 
 def write_item_to_db(table_name, item):

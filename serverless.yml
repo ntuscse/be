@@ -25,6 +25,7 @@ provider:
   environment:
     SERVERLESS_STAGE: ${opt:stage, "dev"}
     PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
+    PRODUCTS_TABLE_NAME: ${self:custom.tableNames.productsTableName}
 
 plugins:
   - serverless-dynamodb-local
@@ -42,7 +43,8 @@ custom:
     useChildProcesses: true
     httpPort: 4000
   tableNames:
-    productCategoriesTableName: 'productCategoriesTable-${self:provider.stage}'
+    productCategoriesTableName: 'be-${self:provider.stage}-product_categories'
+    productsTableName: 'be-${self:provider.stage}-products'
   dynamodb:
     stages:
       - dev
@@ -157,11 +159,6 @@ functions:
           path: /payments/intent
           cors: true
 
-constructs:
-  myTable:
-    type: database/dynamodb-single-table
-
-
 resources:
   Resources:
     CognitoUserPool:
@@ -200,6 +197,20 @@ resources:
             AttributeType: S
         KeySchema:
           - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    productsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.PRODUCTS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1

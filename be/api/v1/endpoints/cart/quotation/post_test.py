@@ -9,6 +9,7 @@ def test_post_cart_quotation():
         "items": [
             {
                 "productId": 1,
+                "size": "s",
                 "quantity": 1
             }
         ]
@@ -24,7 +25,8 @@ def test_post_cart_quotation():
                 'https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/451406/item/sggoods_09_451406.jpg?width=1008&impolicy=quality_75'],
             'sizes': ['xs', 's', 'm', 'l'],
             'productCategory': 't-shirt',
+            'size': 's',
             'isAvailable': True, 'quantity': 1
         }],
-        "price": {'currency': 'sgd', 'discount': 0, 'grandTotal': 22, 'subtotal': 22}
+        "price": {'currency': 'sgd', 'discount': 0.0, 'grandTotal': 22.9, 'subtotal': 22.9}
     }

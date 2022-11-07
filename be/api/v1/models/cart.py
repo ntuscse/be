@@ -11,6 +11,6 @@ class Cart(BaseModel):
 
 class PriceModel(BaseModel):
     currency: str
-    subtotal: int
-    discount: int
-    grandTotal: int
+    subtotal: float
+    discount: float
+    grandTotal: float

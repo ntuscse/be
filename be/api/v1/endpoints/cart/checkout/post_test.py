@@ -6,9 +6,11 @@ client = createTestClient(router)
 
 def test_post_cart_checkout():
     req_body = {
+        "email": "test@example.com",
         "items": [
             {
                 "productId": 1,
+                "size": "s",
                 "quantity": 1
             }
         ]
@@ -22,9 +24,10 @@ def test_post_cart_checkout():
             'images': [
                 'https://image.uniqlo.com/UQ/ST3/sg/imagesgoods/451406/item/sggoods_09_451406.jpg?width=1008&impolicy=quality_75'],
             'sizes': ['xs', 's', 'm', 'l'],
+            'size': 's',
             'productCategory': 't-shirt',
             'isAvailable': True, 'quantity': 1
         }]
-    assert response.json()['price'] =={'currency': 'sgd', 'discount': 0, 'grandTotal': 22, 'subtotal': 22}
+    assert response.json()['price'] =={'currency': 'sgd', 'discount': 0, 'grandTotal': 22.9, 'subtotal': 22.9}
     assert response.json()['payment']['paymentGateway'] == 'stripe'
     assert type(response.json()['payment']['clientSecret']) is str

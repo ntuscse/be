@@ -10,3 +10,4 @@ def read_product(product_id: str):
     # product = read_item_from_db()
 
     return product
+
