@@ -33,6 +33,9 @@ def dal_read_product(item_id: str) -> Product:
     res = read_item_from_db(table_name, key)
     print(res)
 
+    if res is None:
+        raise Exception("No product found in db")
+
     return Product(
         id=res["id"],
         name=res["name"],

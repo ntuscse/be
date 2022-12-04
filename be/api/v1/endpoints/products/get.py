@@ -26,10 +26,10 @@ async def get_products():
 @router.get("/{item_id}", response_model=Product)
 # gets a single product
 async def get_product(item_id: str):
-    product = dal_read_product(item_id)
-    if product:
-        return product
-    raise HTTPException(status_code=404, detail="Product not found")
+    try:
+        return dal_read_product(item_id)
+    except Exception:
+        raise HTTPException(status_code=404, detail="Product not found")
 
 
 handler = create_non_auth_router(router)
