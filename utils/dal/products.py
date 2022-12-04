@@ -16,6 +16,7 @@ def dal_create_product(self, product: Product):
         {"price": {"N": product.price}},
         {"images": {"L": product.images}},
         {"sizes": {"L": product.sizes}},
+        {"colorways": {"L": product.colorways}},
         {"product_category": {"S": product.productCategory}},
         {"is_available": {"B", product.isAvailable}},
     }
@@ -27,13 +28,14 @@ def dal_read_products() -> list[Product]:
     products = []
     for product in res:
         products.append(Product(
-            id=product["item_id"]["S"],
-            name=product["name"]["S"],
-            price=product["name"]["N"],
-            images=product["images"]["L"],
-            sizes=product["images"]["S"],
-            productCategory=product["product_category"]["S"],
-            isAvailable=product["is_available"]["B"],
+            id=product["id"],
+            name=product["name"],
+            price=product["price"],
+            images=product["images"],
+            sizes=product["sizes"],
+            colorways=product["colorways"],
+            productCategory=product["product_category"],
+            isAvailable=product["is_available"],
         ))
 
     return products
