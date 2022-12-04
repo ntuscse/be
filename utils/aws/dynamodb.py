@@ -28,11 +28,15 @@ dynamodb = boto3.resource(
 #####
 
 def read_item_from_db(table_name, key, pagination=False):
-    response = dynamodb.get_item(
-        TableName=table_name,
+    print("ATTEMPTING TO read_item_from_db")
+    table = dynamodb.Table(table_name)
+    response = table.get_item(
         Key=key
     )
+    print("==== response from ddb =====")
+    print(response)
     return response.get('Item')
+
 
 def read_all_items_from_db(tableName, pagination=False):
     print("ATTEMPTING TO read_all_items_from_db")
