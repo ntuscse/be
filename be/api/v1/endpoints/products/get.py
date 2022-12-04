@@ -2,9 +2,9 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from be.api.v1.templates.non_auth_route import create_non_auth_router
-from be.api.v1.endpoints.products.data import products
+# from be.api.v1.endpoints.products.data import products
 from be.api.v1.models.product import Product
-from utils.dal.products import dal_read_products
+from utils.dal.products import dal_read_products, dal_read_product
 
 router = APIRouter(prefix="/products", tags=["merchandise"])
 
@@ -25,11 +25,11 @@ async def get_products():
 
 @router.get("/{item_id}", response_model=Product)
 # gets a single product
-async def get_product(item_id: int):
-    for _index, item in enumerate(products):
-        if item.id == str(item_id):
-            return item
-    raise HTTPException(status_code=404, detail="Product not found")
+async def get_product(item_id: str):
+    try:
+        return dal_read_product(item_id)
+    except Exception:
+        raise HTTPException(status_code=404, detail="Product not found")
 
 
 handler = create_non_auth_router(router)
