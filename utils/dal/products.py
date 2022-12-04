@@ -43,11 +43,3 @@ def dal_read_product(item_id: str) -> Product:
         productCategory=res["product_category"],
         isAvailable=res["is_available"],
     )
-
-
-def dal_delete_product_category(self, item_id: str) -> bool:
-    key = {
-        {"item_id": {"S": item_id}}
-    }
-    delete_item_from_db(table_name, key)
-    return True
