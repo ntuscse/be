@@ -25,10 +25,10 @@ async def get_products():
 
 @router.get("/{item_id}", response_model=Product)
 # gets a single product
-async def get_product(item_id: int):
+async def get_product(item_id: str):
     products_list = dal_read_products()
     for _index, item in enumerate(products_list):
-        if item.id == str(item_id):
+        if item.id == item_id:
             return item
     raise HTTPException(status_code=404, detail="Product not found")
 
