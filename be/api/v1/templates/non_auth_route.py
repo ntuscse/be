@@ -7,13 +7,12 @@ is_dev = os.environ.get('SERVERLESS_STAGE')
 
 origins = [
     "http://localhost:3000",
-    "https://dev.ntuscse.com",
+    "https://dev.merch.ntuscse.com",
     "https://api.docs.dev.ntuscse.com"
 ] if is_dev else [
-    "https://ntuscse.com",
+    "https://merch.ntuscse.com",
     "https://api.docs.ntuscse.com"
 ]
-
 
 def create_non_auth_router(router):
     app = FastAPI()
