@@ -8,7 +8,8 @@ from utils.aws.dynamodb import (
 
 table_name = os.environ["PRODUCTS_TABLE_NAME"]
 
-def dal_read_products() -> list[Product]:
+
+def dal_all_read_products() -> list[Product]:
     res = read_all_items_from_db(table_name)
     products = []
     for product in res:
