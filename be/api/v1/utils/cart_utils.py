@@ -1,4 +1,4 @@
-from be.api.v1.db.products import read_product
+from utils.dal.products import dal_read_products, dal_read_product
 from be.api.v1.models.orders import OrderItem
 from be.api.v1.models.cart import Cart, PriceModel
 
@@ -6,7 +6,7 @@ from be.api.v1.models.cart import Cart, PriceModel
 def generate_order_items_from_cart(cart: Cart):
     cart_order_items = []
     for i in cart.items:
-        product = read_product(i.productId)
+        product = dal_read_product(i.productId)
         if not product:
             raise Exception(f"productId {i.productId} could not be found")
         cart_order_items.append(
@@ -14,12 +14,11 @@ def generate_order_items_from_cart(cart: Cart):
                 id=product.id,
                 name=product.name,
                 price=product.price,
-                images=product.images,
-                sizes=product.sizes,
+                image=product.images[0],
                 productCategory=product.productCategory,
-                isAvailable=product.isAvailable,
                 quantity=i.quantity,
                 size=i.size,
+                colorway=i.colorway
             ))
     return cart_order_items
 
