@@ -1,6 +1,6 @@
-from utils.dal.products import dal_read_products, dal_read_product
 from be.api.v1.models.orders import OrderItem
 from be.api.v1.models.cart import Cart, PriceModel
+from utils.dal.products import dal_all_read_products, dal_read_product
 
 
 def generate_order_items_from_cart(cart: Cart):
