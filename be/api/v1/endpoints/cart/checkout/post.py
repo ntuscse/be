@@ -50,7 +50,7 @@ async def post_checkout(req: CheckoutRequestBodyModel):
         payment_intent = stripe.PaymentIntent.create(
             payment_method_types=["paynow"],
             payment_method_data={"type": "paynow"},
-            amount=int(price.grandTotal * 100), # stripe payment amounts are in cents
+            amount=int(price.grandTotal),  # stripe payment amounts are in cents
             currency="sgd",
             receipt_email=req.email,
             description=f"SCSE Merch Purchase:\n{description}"
