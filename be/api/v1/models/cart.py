@@ -6,6 +6,7 @@ class CartItem(BaseModel):
     size: Optional[str]
     quantity: int
     colorway: str
+    
 class Cart(BaseModel):
     items: list[CartItem]
     promoCode: Optional[str]
