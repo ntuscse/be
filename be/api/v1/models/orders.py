@@ -13,8 +13,8 @@ class OrderItem(BaseModel):
     name: str
     price: int
     productCategory: str  # todo: change to productCat enum model
-    quantity: int
     image: str
+    quantity: int
     colorway: str
     size: Optional[str]
 

@@ -7,7 +7,7 @@ import stripe
 from be.api.v1.templates.non_auth_route import create_non_auth_router
 from be.api.v1.models.cart import PriceModel, Cart
 from be.api.v1.models.orders import OrderItem, Order, OrderStatus
-from be.api.v1.utils.cart_utils import calc_cart_value, generate_order_items_from_cart
+from be.api.v1.utils.cart_utils import calc_cart_value, describe_cart, generate_order_items_from_cart
 from utils.dal.order import dal_create_order
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
@@ -60,7 +60,7 @@ async def post_checkout(req: CheckoutRequestBodyModel):
         orderID = uuid.uuid4().__str__()
         orderDateTime = datetime.now().__str__()
         customerEmail = req.email
-        transactionID = "payment_intent.id"
+        transactionID = payment_intent.id
         paymentPlatform = "stripe"
         orderItems = items_products
         status = OrderStatus.PENDING_PAYMENT
