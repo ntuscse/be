@@ -26,6 +26,7 @@ provider:
     SERVERLESS_STAGE: ${opt:stage, "dev"}
     PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
     PRODUCTS_TABLE_NAME: ${self:custom.tableNames.productsTableName}
+    ORDERS_TABLE_NAME: ${self:custom.tableNames.ordersTableName}
 
 plugins:
   - serverless-dynamodb-local
@@ -45,6 +46,7 @@ custom:
   tableNames:
     productCategoriesTableName: 'be-${self:provider.stage}-product_categories'
     productsTableName: 'be-${self:provider.stage}-products'
+    ordersTableName: 'be-${self:provider.stage}-orders'
   dynamodb:
     stages:
       - dev
@@ -215,3 +217,17 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+
+    ordersTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.ORDERS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: orderID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: orderID
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 2
+          WriteCapacityUnits: 2

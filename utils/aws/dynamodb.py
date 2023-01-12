@@ -28,10 +28,9 @@ dynamodb = boto3.resource(
 #####
 
 def read_item_from_db(table_name, key, pagination=False):
-    print("ATTEMPTING TO read_item_from_db")
     table = dynamodb.Table(table_name)
     response = table.get_item(
-        Key=key
+        Key=key # Key is of format {<keyName>: <value>} eg {"orderID": order.orderID}
     )
     print("==== response from ddb =====")
     print(response)
@@ -58,15 +57,13 @@ def read_all_items_from_db(tableName, pagination=False):
 
 
 def write_item_to_db(table_name, item):
-    response = dynamodb.put_item(
-        TableName=table_name,
+    table = dynamodb.Table(table_name)
+    response = table.put_item(
         Item=item
     )
-    waiter = dynamodb.get_waiter('table_exists')
-    waiter.wait(TableName=table_name)
     return response
 
-
+# TODO: Update based on https://dynobase.dev/dynamodb-python-with-boto3
 def update_item_in_db(table_name, item):
     response = dynamodb.update_item(
         TableName=table_name,
@@ -76,7 +73,7 @@ def update_item_in_db(table_name, item):
     waiter.wait(TableName=table_name)
     return response
 
-
+# TODO: Update based on https://dynobase.dev/dynamodb-python-with-boto3
 def delete_item_from_db(table_name, key):
     response = dynamodb.delete_item(
         TableName=table_name,
@@ -86,7 +83,7 @@ def delete_item_from_db(table_name, key):
     waiter.wait(TableName=table_name)
     return response
 
-
+# TODO: Update based on https://dynobase.dev/dynamodb-python-with-boto3
 def create_db(table_name, attribute_definitions, key_schema, provisioned_throughput):
     table = dynamodb.create_table(
         TableName=table_name,
