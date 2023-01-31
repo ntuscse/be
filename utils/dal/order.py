@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import os
 from be.api.v1.models.orders import Order, OrderStatus
 from utils.aws.dynamodb import read_item_from_db, write_item_to_db

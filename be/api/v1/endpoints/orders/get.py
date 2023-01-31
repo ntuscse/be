@@ -10,7 +10,8 @@ router = APIRouter(prefix="/orders", tags=["merchandise"])
 async def get_order(order_id: str):
     try:
         return dal_read_order(order_id)
-    except Exception:
+    except Exception as e:
+        print("Error reading order:", e)
         raise HTTPException(status_code=404, detail="Order not found")
 
 
