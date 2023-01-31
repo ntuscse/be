@@ -31,7 +31,7 @@ def dal_create_order(order: Order):
     write_item_to_db(table_name, order_dict)
 
 def dal_read_order(order_id: str) -> Order:
-    key = {"id": order_id}
+    key = {"orderID": order_id}
 
     res = read_item_from_db(table_name, key)
 
