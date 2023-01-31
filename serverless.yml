@@ -84,6 +84,15 @@ functions:
           path: /redoc
           method: get
 
+  getOrder:
+    handler: be.api.v1.endpoints.orders.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /orders/{proxy+}
+
   getUsers:
     handler: be.api.v1.endpoints.users.get.handler
     environment:
