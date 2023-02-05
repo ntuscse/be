@@ -66,6 +66,6 @@ def describe_cart(cart_order_items: list[OrderItem]):
         name = entry.name
         if entry.size:
             name = f'{entry.name} (Size: {entry.size.upper()})'
-        entries.append(f'{name} x{entry.quantity} - S${price:.2f}')
+        entries.append(f'{name} x{entry.quantity} - S${price/100:.2f}')
 
     return '\n'.join(entries)

@@ -29,6 +29,8 @@ class PaymentModel(BaseModel):
 
 
 class PostCheckoutResponseModel(BaseModel):
+    orderId: str
+    email: str
     items: list[OrderItem]
     price: PriceModel
     payment: PaymentModel
