@@ -19,10 +19,10 @@ class OrderItem(BaseModel):
     size: Optional[str]
 
 class Order(BaseModel):
-    orderID: str
-    orderDateTime: datetime
+    id: str
+    dateTime: datetime
     customerEmail: str
     transactionID: str
     paymentGateway: str
-    orderItems: list[OrderItem]
+    items: list[OrderItem]
     status: OrderStatus
