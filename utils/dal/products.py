@@ -1,4 +1,5 @@
 import os
+from fastapi import HTTPException
 from be.api.v1.models.product import Product
 from utils.aws.dynamodb import (
     read_item_from_db,
@@ -53,10 +54,10 @@ def dal_read_product(item_id: str) -> Product:
 def dal_increment_stock_count(item_id: str, increment_value: int):
     key = {"id": item_id}
     update_expression = f'ADD current_qty :incrementValue'
-    condition_expression = 'is_available = :is_available'
+    condition_expression = 'is_available = :isAvailable AND current_qty >= :incrementValue'
     expression_attribute_values = {
         ':incrementValue': increment_value,
-        ':is_available': True
+        ':isAvailable': True,
     }
     update_item_in_db(table_name, key, update_expression, condition_expression, expression_attribute_values)
 

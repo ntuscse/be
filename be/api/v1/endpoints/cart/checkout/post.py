@@ -2,6 +2,7 @@ import os
 import uuid
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from botocore.exceptions import ClientError
 from datetime import datetime, timedelta
 import stripe
 from be.api.v1.templates.non_auth_route import create_non_auth_router
@@ -102,6 +103,11 @@ async def post_checkout(req: CheckoutRequestBodyModel):
             "expiry": int(expiry.timestamp())
         }
 
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
+            raise HTTPException(status_code=400, detail="Current quantity cannot be less than 0 and must be available for sale")
+        else:
+            raise HTTPException(status_code=500, detail=e)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=e)
