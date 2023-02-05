@@ -1,9 +1,10 @@
 from be.api.v1.models.orders import OrderItem
 from be.api.v1.models.cart import Cart, PriceModel
 from utils.dal.products import dal_all_read_products, dal_read_product
+from typing import List
 
 
-def generate_order_items_from_cart(cart: Cart):
+def generate_order_items_from_cart(cart: Cart) -> List[OrderItem]:
     cart_order_items = []
     for i in cart.items:
         product = dal_read_product(i.productId)

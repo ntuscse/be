@@ -9,5 +9,6 @@ class Product(BaseModel):
     sizes: list[str]
     colorways: list[str]
     productCategory: str  # todo: change to productCat enum model
+    currentQty: int
     isAvailable: bool = True
     # maxQty: int
