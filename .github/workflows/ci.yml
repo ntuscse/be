@@ -60,6 +60,7 @@ jobs:
 
           PRODUCT_CATEGORIES_TABLE_NAME: 'be-dev-product_categories'
           PRODUCTS_TABLE_NAME: 'be-dev-products'
+          FRONTEND_HOST: 'https://dev.merch.ntuscse.com'
 
           BASE_API_SERVER_URL: 'https://api.dev.ntuscse.com'
       
