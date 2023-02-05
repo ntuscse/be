@@ -1,9 +1,7 @@
 import boto3
-from boto3.dynamodb.conditions import Key
 import os
-from botocore.config import Config
 from dotenv import load_dotenv
-from typing import TypeAlias
+
 
 load_dotenv()
 
@@ -24,8 +22,8 @@ dynamodb = boto3.resource(
     **dynamodb_args
 )
 
-UpdateKey: TypeAlias = dict[str, dict[str, int|str]]
-ExpressionAttributeValues: TypeAlias = dict[str, dict[str, int|str]]
+UpdateKey = dict[str, dict[str, int|str]]
+ExpressionAttributeValues = dict[str, dict[str, int|str]]
 
 ######
 # reference : https://dynobase.dev/dynamodb-python-with-boto3

@@ -12,6 +12,7 @@ products = [
         sizes=["xs", "s", "m", "l"],
         colorways=["Black, White"],
         productCategory="t-shirt",
+        currentQty=50,
     ),
     # Product(
     #     id="2",
