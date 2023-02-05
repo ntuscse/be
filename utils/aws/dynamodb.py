@@ -1,6 +1,7 @@
 import boto3
 import os
 from dotenv import load_dotenv
+from typing import Union
 
 
 load_dotenv()
@@ -22,8 +23,8 @@ dynamodb = boto3.resource(
     **dynamodb_args
 )
 
-UpdateKey = dict[str, dict[str, int|str]]
-ExpressionAttributeValues = dict[str, dict[str, int|str]]
+UpdateKey = dict[str, dict[str, Union[int,str]]]
+ExpressionAttributeValues = dict[str, dict[str, Union[int,str]]]
 
 ######
 # reference : https://dynobase.dev/dynamodb-python-with-boto3
