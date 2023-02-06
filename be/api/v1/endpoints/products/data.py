@@ -10,8 +10,11 @@ products = [
              "sggoods_09_451406.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l"],
-        colorways=["Black, White"],
+        colorways=["Black", "White"],
         productCategory="t-shirt",
+        stock=[
+            [0, 1, 2, 3], [1, 2, 3, 4],
+        ],
     ),
     # Product(
     #     id="2",
