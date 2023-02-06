@@ -22,6 +22,7 @@ def dal_all_read_products() -> list[Product]:
             colorways=product["colorways"],
             productCategory=product["product_category"],
             isAvailable=product["is_available"],
+            stock=product["stock"],
         ))
 
     return products
@@ -46,4 +47,5 @@ def dal_read_product(item_id: str) -> Product:
         colorways=res["colorways"],
         productCategory=res["product_category"],
         isAvailable=res["is_available"],
+        stock=product["stock"],
     )
