@@ -92,6 +92,7 @@ async def post_checkout(req: CheckoutRequestBodyModel):
 
 
     except Exception as e:
+        print("Error checking out:", e)
         raise HTTPException(status_code=500, detail=e)
 
 
