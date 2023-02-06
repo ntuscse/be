@@ -10,4 +10,4 @@ class Product(BaseModel):
     colorways: list[str]
     productCategory: str  # todo: change to productCat enum model
     isAvailable: bool = True
-    # maxQty: int
+    stock: list[list[int]]
