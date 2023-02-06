@@ -45,9 +45,13 @@ jobs:
 
       - name: Install dependencies
         run: npm run setup
-
+        
       - name: Pytest
         run: npm run test
+      
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        
 
   lint:
     runs-on: ubuntu-latest
