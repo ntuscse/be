@@ -9,7 +9,15 @@ router = APIRouter(prefix="/orders", tags=["merchandise"])
 # gets a single order
 async def get_order(order_id: str):
     try:
-        return dal_read_order(order_id)
+        order = dal_read_order(order_id)
+        # Censor the email associated with the order.
+        split = order.customerEmail.split('@')
+        username = split[0]
+        if len(username) > 2:
+            username = username[:2] + '*'*len(username)-2
+        split[0] = username
+        order.customerEmail = split.join('@')
+        return order
     except Exception as e:
         print("Error reading order:", e)
         raise HTTPException(status_code=404, detail="Order not found")
