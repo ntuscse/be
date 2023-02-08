@@ -1,6 +1,11 @@
 # be
 Serverless backend
 
+Docs (prod) [TBD]: https://api.docs.ntuscse.com  
+Docs (dev) [TBD]:  https://api.docs.dev.ntuscse.com  
+API (prod) [TBD]: https://api.ntuscse.com  
+API (dev): https://api.dev.ntuscse.com  
+
 
 ## Requirements:
 ### Node v14
@@ -105,6 +110,8 @@ $ npm run offline
 ```
 
 ## Test
+Create a dotenv file and follow the format as shown in stub.env
+
 Run the following command to run tests:
 ```bash
 $ npm run test

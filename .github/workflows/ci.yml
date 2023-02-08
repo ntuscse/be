@@ -1,0 +1,116 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push 
+  push:
+  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-22.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          architecture: "x64"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          virtualenvs-path: ./poetry_virtualenv
+          installer-parallel: true
+
+      - name: Setup aws dummy credentials
+        run: |
+          mkdir ~/.aws
+          touch ~/.aws/credentials
+
+      - name: Install dependencies
+        run: npm run setup
+        
+      - name: Pytest
+        run: npm run test
+      
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          IS_OFFLINE: "true"
+          AWS_ACCESS_KEY_ID: 'testing'
+          AWS_SECRET_ACCESS_KEY: 'testing'
+          AWS_SECURITY_TOKEN: 'testing'
+          AWS_SESSION_TOKEN: 'testing'
+          AWS_DEFAULT_REGION: 'ap-southeast-1'
+
+          PRODUCT_CATEGORIES_TABLE_NAME: 'be-dev-product_categories'
+          PRODUCTS_TABLE_NAME: 'be-dev-products'
+          FRONTEND_HOST: 'https://dev.merch.ntuscse.com'
+
+          BASE_API_SERVER_URL: 'https://api.dev.ntuscse.com'
+      
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+          architecture: "x64"
+
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          virtualenvs-path: ./poetry_virtualenv
+          installer-parallel: true
+
+      - name: Load cached virtualenv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .poetry_virtualenv
+          key: poetry_virtualenv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Load cached yarn
+        uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: npm run setup
+
+      - name: Pylint
+        run: npm run lint

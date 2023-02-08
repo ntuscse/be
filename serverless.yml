@@ -1,25 +1,64 @@
 service: be
 package:
   individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!.venv/**'
 provider:
   name: aws
-  profile: ${opt:aws-profile, "ntuscse"}
-  region: "us-west-2"
+#  profile: ${opt:aws-profile, "ntuscse"}
+  region: "ap-southeast-1"
+  apiName: be
   stage: ${opt:stage, "dev"}
   runtime: python3.9
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+      Resource: "*"
+  environment:
+    SERVERLESS_STAGE: ${opt:stage, "dev"}
+    PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
+    PRODUCTS_TABLE_NAME: ${self:custom.tableNames.productsTableName}
+    ORDERS_TABLE_NAME: ${self:custom.tableNames.ordersTableName}
+    FRONTEND_HOST: ${ssm:/FRONTEND_HOST_${opt:stage}}
 
 plugins:
-  - serverless-offline
+  - serverless-dynamodb-local
   - serverless-python-requirements
   - serverless-lift
+  - serverless-dotenv-plugin
+  - serverless-offline # serverless-offline needs to be last in the list
+
 custom:
   pythonRequirements:
-    dockerizePip: true
+    dockerizePip: false
     usePoetry: true
   serverless-offline:
     allowCache: true
     useChildProcesses: true
     httpPort: 4000
+  tableNames:
+    productCategoriesTableName: 'be-${self:provider.stage}-product_categories'
+    productsTableName: 'be-${self:provider.stage}-products'
+    ordersTableName: 'be-${self:provider.stage}-orders'
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+      port: 8011
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      seed: true
+      convertEmptyValues: true
 
 functions:
   root:
@@ -30,6 +69,30 @@ functions:
       - http:
           method: get
           path: /
+
+  docs:
+    handler: be.docs.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          path: /docs
+          method: get
+      - http:
+          path: /openapi.json
+          method: get
+      - http:
+          path: /redoc
+          method: get
+
+  getOrder:
+    handler: be.api.v1.endpoints.orders.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /orders/{proxy+}
 
   getUsers:
     handler: be.api.v1.endpoints.users.get.handler
@@ -51,10 +114,143 @@ functions:
       - http:
           method: get
           path: /products
+          cors: true
       - http:
           method: get
           path: /products/{proxy+}
+          cors: true
 
-constructs:
-  myTable:
-    type: database/dynamodb-single-table
+  getProductCategories:
+    handler: be.api.v1.endpoints.product_categories.get.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: get
+          path: /product-categories
+      - http:
+          method: get
+          path: /product-categories/{proxy+}
+
+  postProductCategories:
+    handler: be.api.v1.endpoints.product_categories.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: post
+          path: /product-categories
+
+  postCartQuotation:
+    handler: be.api.v1.endpoints.cart.quotation.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: post
+          path: /cart/quotation
+          cors: true
+
+  postCartCheckout:
+    handler: be.api.v1.endpoints.cart.checkout.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    events:
+      - http:
+          method: post
+          path: /cart/checkout
+          cors: true
+
+  postPaymentsIntent:
+    handler: be.api.v1.endpoints.payments.intent.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+
+    events:
+      - http:
+          method: post
+          path: /payments/intent
+          cors: true
+
+  postStripeWebhook:
+    handler: be.api.v1.endpoints.stripe_webhook.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+    events:
+      - http:
+          method: post
+          path: /stripe_webhook
+          cors: true
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        # Generate a name based on the stage
+        UserPoolName: ${self:provider.stage}-user-pool
+        # Set email as an alias
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        # Generate an app client name based on the stage
+        ClientName: ${self:provider.stage}-user-pool-client
+        UserPoolId:
+          Ref: CognitoUserPool
+        GenerateSecret: true
+        AllowedOAuthFlows: 
+          - code
+        AllowedOAuthScopes: 
+          - email
+          - openid
+        CallbackURLs:
+          - https://google.com
+
+    productCategoriesTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.PRODUCT_CATEGORIES_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: name
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    productsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.PRODUCTS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    ordersTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: ${self:provider.environment.ORDERS_TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: orderID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: orderID
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 2
+          WriteCapacityUnits: 2
