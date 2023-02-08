@@ -184,34 +184,34 @@ functions:
           path: /stripe_webhook
           cors: true
 
-resources:
-  Resources:
-    CognitoUserPool:
-      Type: AWS::Cognito::UserPool
-      Properties:
-        # Generate a name based on the stage
-        UserPoolName: ${self:provider.stage}-user-pool
-        # Set email as an alias
-        UsernameAttributes:
-          - email
-        AutoVerifiedAttributes:
-          - email
-
-    CognitoUserPoolClient:
-      Type: AWS::Cognito::UserPoolClient
-      Properties:
-        # Generate an app client name based on the stage
-        ClientName: ${self:provider.stage}-user-pool-client
-        UserPoolId:
-          Ref: CognitoUserPool
-        GenerateSecret: true
-        AllowedOAuthFlows: 
-          - code
-        AllowedOAuthScopes: 
-          - email
-          - openid
-        CallbackURLs:
-          - https://google.com
+#resources:
+#  Resources:
+#    CognitoUserPool:
+#      Type: AWS::Cognito::UserPool
+#      Properties:
+#        # Generate a name based on the stage
+#        UserPoolName: ${self:provider.stage}-user-pool
+#        # Set email as an alias
+#        UsernameAttributes:
+#          - email
+#        AutoVerifiedAttributes:
+#          - email
+#
+#    CognitoUserPoolClient:
+#      Type: AWS::Cognito::UserPoolClient
+#      Properties:
+#        # Generate an app client name based on the stage
+#        ClientName: ${self:provider.stage}-user-pool-client
+#        UserPoolId:
+#          Ref: CognitoUserPool
+#        GenerateSecret: true
+#        AllowedOAuthFlows:
+#          - code
+#        AllowedOAuthScopes:
+#          - email
+#          - openid
+#        CallbackURLs:
+#          - https://google.com
 
     productCategoriesTable:
       Type: 'AWS::DynamoDB::Table'
