@@ -164,10 +164,23 @@ functions:
     handler: be.api.v1.endpoints.payments.intent.post.handler
     environment:
       STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+
     events:
       - http:
           method: post
           path: /payments/intent
+          cors: true
+
+  postStripeWebhook:
+    handler: be.api.v1.endpoints.stripe_webhook.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+    events:
+      - http:
+          method: post
+          path: /stripe_webhook
           cors: true
 
 resources:
