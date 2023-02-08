@@ -8,6 +8,7 @@ node_modules/
 # python local
 .dynamodb/
 .env
+.env.dev
 
 # generated
 out/
