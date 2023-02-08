@@ -27,6 +27,7 @@ provider:
     PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
     PRODUCTS_TABLE_NAME: ${self:custom.tableNames.productsTableName}
     ORDERS_TABLE_NAME: ${self:custom.tableNames.ordersTableName}
+    FRONTEND_HOST: ${ssm:/FRONTEND_HOST_${opt:stage}}
 
 plugins:
   - serverless-dynamodb-local
