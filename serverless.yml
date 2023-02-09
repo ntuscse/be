@@ -4,6 +4,7 @@ package:
   patterns:
     - '!node_modules/**'
     - '!.venv/**'
+useDotenv: true
 provider:
   name: aws
 #  profile: ${opt:aws-profile, "ntuscse"}
@@ -27,7 +28,7 @@ provider:
     PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
     PRODUCTS_TABLE_NAME: ${self:custom.tableNames.productsTableName}
     ORDERS_TABLE_NAME: ${self:custom.tableNames.ordersTableName}
-    FRONTEND_HOST: ${ssm:/FRONTEND_HOST_${opt:stage}}
+    FRONTEND_HOST: ${env:FRONTEND_HOST, ssm:/FRONTEND_HOST_${opt:stage}}
 
 plugins:
   - serverless-dynamodb-local
@@ -165,7 +166,7 @@ functions:
     handler: be.api.v1.endpoints.payments.intent.post.handler
     environment:
       STAGE: ${self:provider.stage}
-      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${opt:stage}}
 
     events:
       - http:
@@ -177,7 +178,7 @@ functions:
     handler: be.api.v1.endpoints.stripe_webhook.post.handler
     environment:
       STAGE: ${self:provider.stage}
-      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${opt:stage}}
     events:
       - http:
           method: post
