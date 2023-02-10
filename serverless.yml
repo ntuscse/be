@@ -4,7 +4,7 @@ package:
   patterns:
     - '!node_modules/**'
     - '!.venv/**'
-useDotenv: true
+useDotenv: ${self:custom.enableDotEnv.${self:provider.stage}}
 provider:
   name: aws
 #  profile: ${opt:aws-profile, "ntuscse"}
@@ -38,6 +38,9 @@ plugins:
   - serverless-offline # serverless-offline needs to be last in the list
 
 custom:
+  enableDotEnv:
+    dev: true
+    prod: false
   pythonRequirements:
     dockerizePip: false
     usePoetry: true
