@@ -14,9 +14,10 @@ async def get_order(order_id: str):
         split = order.customerEmail.split('@')
         username = split[0]
         if len(username) > 2:
-            username = username[:2] + '*'*len(username)-2
+            username = username[:2] + '*' * (len(username)-2)
         split[0] = username
-        order.customerEmail = split.join('@')
+        # order.customerEmail = split.join('@')
+        order.customerEmail = '@'.join(split)
         return order
     except Exception as e:
         print("Error reading order:", e)
