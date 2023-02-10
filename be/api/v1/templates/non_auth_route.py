@@ -3,16 +3,19 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 
-is_dev = os.environ.get('SERVERLESS_STAGE')
+stage = os.environ.get('SERVERLESS_STAGE')
+is_dev = stage == "dev"
+prod = stage == "prod"
 
-origins = [
-    "http://localhost:3000",
-    "https://dev.merch.ntuscse.com",
-    "https://api.docs.dev.ntuscse.com"
-] if is_dev else [
-    "https://merch.ntuscse.com",
-    "https://api.docs.ntuscse.com"
-]
+origins= []
+if stage == "prod":
+    origins = [
+        "https://merch.ntuscse.com",
+        "https://ntuscse.com",
+        "https://api.docs.ntuscse.com"
+    ]
+else:
+    origins = ["*"]
 
 def create_non_auth_router(router):
     app = FastAPI()

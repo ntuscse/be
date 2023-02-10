@@ -4,6 +4,7 @@ package:
   patterns:
     - '!node_modules/**'
     - '!.venv/**'
+useDotenv: ${self:custom.enableDotEnv.${self:provider.stage}}
 provider:
   name: aws
 #  profile: ${opt:aws-profile, "ntuscse"}
@@ -27,7 +28,7 @@ provider:
     PRODUCT_CATEGORIES_TABLE_NAME: ${self:custom.tableNames.productCategoriesTableName}
     PRODUCTS_TABLE_NAME: ${self:custom.tableNames.productsTableName}
     ORDERS_TABLE_NAME: ${self:custom.tableNames.ordersTableName}
-    FRONTEND_HOST: ${ssm:/FRONTEND_HOST_${opt:stage}}
+    FRONTEND_HOST: ${env:FRONTEND_HOST, ssm:/FRONTEND_HOST_${self:provider.stage}}
 
 plugins:
   - serverless-dynamodb-local
@@ -37,6 +38,9 @@ plugins:
   - serverless-offline # serverless-offline needs to be last in the list
 
 custom:
+  enableDotEnv:
+    dev: true
+    prod: false
   pythonRequirements:
     dockerizePip: false
     usePoetry: true
@@ -165,7 +169,7 @@ functions:
     handler: be.api.v1.endpoints.payments.intent.post.handler
     environment:
       STAGE: ${self:provider.stage}
-      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${self:provider.stage}}
 
     events:
       - http:
@@ -177,7 +181,7 @@ functions:
     handler: be.api.v1.endpoints.stripe_webhook.post.handler
     environment:
       STAGE: ${self:provider.stage}
-      STRIPE_SECRET_KEY: ${ssm:/STRIPE_SECRET_KEY_${opt:stage}}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${self:provider.stage}}
     events:
       - http:
           method: post
