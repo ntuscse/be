@@ -159,6 +159,7 @@ functions:
     handler: be.api.v1.endpoints.cart.checkout.post.handler
     environment:
       STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${self:provider.stage}}
     events:
       - http:
           method: post
@@ -170,7 +171,6 @@ functions:
     environment:
       STAGE: ${self:provider.stage}
       STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${self:provider.stage}}
-
     events:
       - http:
           method: post
