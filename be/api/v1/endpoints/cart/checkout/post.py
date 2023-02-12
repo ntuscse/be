@@ -83,7 +83,7 @@ async def post_checkout(req: CheckoutRequestBodyModel):
         )
 
         for orderItem in orderItems:
-            dal_increment_stock_count(orderItem.id, -orderItem.quantity)
+            dal_increment_stock_count(orderItem.id, -orderItem.quantity, orderItem.size, orderItem.colorway)
 
         reservedProducts = [ReservedProduct(productID=item.productId, qty=item.quantity) for item in req.items]
         orderHoldEntry = OrderHoldEntry(transactionID=transactionID, expiry=int(expiry.timestamp()), reservedProducts=reservedProducts)

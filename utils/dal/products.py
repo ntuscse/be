@@ -23,6 +23,7 @@ def dal_all_read_products() -> list[Product]:
             sizes=product["sizes"],
             colorways=product["colorways"],
             productCategory=product["product_category"],
+            stock=product["stock"],
             isAvailable=product["is_available"],
         ))
 
@@ -36,7 +37,7 @@ def dal_read_product(item_id: str) -> Product:
     res = read_item_from_db(table_name, key)
     print(res)
 
-    if res is None:
+    if res is None:        
         raise Exception("No product found in db")
 
     return Product(
@@ -46,20 +47,24 @@ def dal_read_product(item_id: str) -> Product:
         images=res["images"],
         sizes=res["sizes"],
         colorways=res["colorways"],
-        currentQty=res["current_qty"],
+        stock=res["current_qty"],
         productCategory=res["product_category"],
         isAvailable=res["is_available"],
     )
 
-def dal_increment_stock_count(item_id: str, increment_value: int):
+def dal_increment_stock_count(item_id: str, increment_value: int, size: str, color: str):
     key = {"id": item_id}
-    update_expression = f'ADD current_qty :incrementValue'
-    condition_expression = 'is_available = :isAvailable AND current_qty >= :incrementValue'
+    update_expression = f'ADD stock.#color.#size :incrementValue'
+    condition_expression = 'is_available = :isAvailable AND stock.#color.#size >= :incrementValue'
     expression_attribute_values = {
         ':incrementValue': increment_value,
         ':isAvailable': True,
     }
-    update_item_in_db(table_name, key, update_expression, condition_expression, expression_attribute_values)
+    expression_attribute_names = {
+        '#color': color,
+        '#size': size
+    }
+    update_item_in_db(table_name, key, update_expression, condition_expression, expression_attribute_values, expression_attribute_names)
 
 def dal_create_product(product: Product):
     product_dict = {
@@ -70,7 +75,7 @@ def dal_create_product(product: Product):
         "sizes": product.sizes,
         "colorways": product.colorways,
         "product_category": product.productCategory,
-        "current_qty": product.currentQty,
+        "stock": product.stock,
         "is_available": product.isAvailable,
     }
     write_item_to_db(table_name, product_dict)

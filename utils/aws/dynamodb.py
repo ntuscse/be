@@ -66,13 +66,14 @@ def write_item_to_db(table_name, item):
     )
     return response
 
-def update_item_in_db(table_name: str, key: UpdateKey, update_expression: str = None, condition_expression: str = None, expression_attribute_values: ExpressionAttributeValues = None):
+def update_item_in_db(table_name: str, key: UpdateKey, update_expression: str = None, condition_expression: str = None, expression_attribute_values: dict = None, expression_attribute_names: dict = None):
     table = dynamodb.Table(table_name)
     response = table.update_item(
         Key=key,
         UpdateExpression=update_expression,
         ConditionExpression=condition_expression,
         ExpressionAttributeValues=expression_attribute_values,
+        ExpressionAttributeNames=expression_attribute_names,
     )
     return response
 
