@@ -12,4 +12,4 @@ class Product(BaseModel):
     productCategory: str  # todo: change to productCat enum model
     stock: Dict[str, Dict[str, int]]
     isAvailable: bool = True
-    # maxQty: int
+    stock: list[list[int]]

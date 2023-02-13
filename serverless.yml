@@ -4,6 +4,7 @@ package:
   patterns:
     - '!node_modules/**'
     - '!.venv/**'
+useDotenv: ${self:custom.enableDotEnv.${self:provider.stage}}
 provider:
   name: aws
 #  profile: ${opt:aws-profile, "ntuscse"}
@@ -29,6 +30,7 @@ provider:
     ORDERS_TABLE_NAME: ${self:custom.tableNames.ordersTableName}
     ORDER_HOLD_TABLE_NAME: ${self:custom.tableNames.ordersHoldTableName}
     ORDER_EXPIRY_TIME: 1 # In hours
+    FRONTEND_HOST: ${env:FRONTEND_HOST, ssm:/FRONTEND_HOST_${self:provider.stage}}
 
 plugins:
   - serverless-dynamodb-local
@@ -38,6 +40,9 @@ plugins:
   - serverless-offline # serverless-offline needs to be last in the list
 
 custom:
+  enableDotEnv:
+    dev: true
+    prod: false
   pythonRequirements:
     dockerizePip: false
     usePoetry: true
@@ -166,6 +171,7 @@ functions:
     handler: be.api.v1.endpoints.cart.checkout.post.handler
     environment:
       STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${self:provider.stage}}
     events:
       - http:
           method: post
@@ -176,41 +182,26 @@ functions:
     handler: be.api.v1.endpoints.payments.intent.post.handler
     environment:
       STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${self:provider.stage}}
     events:
       - http:
           method: post
           path: /payments/intent
           cors: true
 
+  postStripeWebhook:
+    handler: be.api.v1.endpoints.stripe_webhook.post.handler
+    environment:
+      STAGE: ${self:provider.stage}
+      STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY, ssm:/STRIPE_SECRET_KEY_${self:provider.stage}}
+    events:
+      - http:
+          method: post
+          path: /stripe_webhook
+          cors: true
+
 resources:
   Resources:
-    CognitoUserPool:
-      Type: AWS::Cognito::UserPool
-      Properties:
-        # Generate a name based on the stage
-        UserPoolName: ${self:provider.stage}-user-pool
-        # Set email as an alias
-        UsernameAttributes:
-          - email
-        AutoVerifiedAttributes:
-          - email
-
-    CognitoUserPoolClient:
-      Type: AWS::Cognito::UserPoolClient
-      Properties:
-        # Generate an app client name based on the stage
-        ClientName: ${self:provider.stage}-user-pool-client
-        UserPoolId:
-          Ref: CognitoUserPool
-        GenerateSecret: true
-        AllowedOAuthFlows: 
-          - code
-        AllowedOAuthScopes: 
-          - email
-          - openid
-        CallbackURLs:
-          - https://google.com
-
     productCategoriesTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:

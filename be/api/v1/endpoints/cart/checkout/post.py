@@ -51,8 +51,9 @@ async def post_checkout(req: CheckoutRequestBodyModel):
         # calculate subtotal
         items_products = generate_order_items_from_cart(req)
 
+        orderID = uuid.uuid4().__str__()
         price = calc_cart_value(items_products)
-        description = describe_cart(items_products)
+        description = describe_cart(items_products, orderID)
 
         payment_intent = stripe.PaymentIntent.create(
             payment_method_types=["paynow"],
@@ -62,8 +63,6 @@ async def post_checkout(req: CheckoutRequestBodyModel):
             receipt_email=req.email,
             description=f"SCSE Merch Purchase:\n{description}"
         )
-
-        orderID = uuid.uuid4().__str__()
         orderDateTime = datetime.now().__str__()
         customerEmail = req.email
         transactionID = payment_intent.id
@@ -110,6 +109,7 @@ async def post_checkout(req: CheckoutRequestBodyModel):
             raise HTTPException(status_code=500, detail=e)
 
     except Exception as e:
+        print("Error checking out:", e)
         raise HTTPException(status_code=500, detail=e)
 
 
