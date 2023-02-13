@@ -25,7 +25,7 @@ class PaymentModel(BaseModel):
 
 
 class PostCheckoutResponseModel(BaseModel):
-    orderId: str
+    id: str
     email: str
     items: list[OrderItem]
     price: PriceModel
@@ -59,27 +59,29 @@ async def post_checkout(req: CheckoutRequestBodyModel):
             receipt_email=req.email,
             description=f"SCSE Merch Purchase:\n{description}"
         )
-        orderDateTime = datetime.now().__str__()
+
+        id = uuid.uuid4().__str__()
+        dateTime = datetime.now().__str__()
         customerEmail = req.email
         transactionID = payment_intent.id
         paymentPlatform = "stripe"
-        orderItems = items_products
+        items = items_products
         status = OrderStatus.PENDING_PAYMENT
 
         order = Order(
-            orderID = orderID,
-            orderDateTime = orderDateTime,
+            id = id,
+            dateTime = dateTime,
             customerEmail = customerEmail,
             transactionID = transactionID,
             paymentGateway = paymentPlatform,
-            orderItems = orderItems,
+            items = items,
             status = status
         )
 
         dal_create_order(order)
 
         return {
-            "orderId": orderID,
+            "id": id,
             "items": items_products,
             "price": price,
             "payment": {

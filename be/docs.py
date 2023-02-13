@@ -5,25 +5,14 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from dotenv import load_dotenv
 
-load_dotenv(join(dirname(__file__), '..', '.env.test'))
-base_api_server_url: str = os.getenv('BASE_API_SERVER_URL')
-
+from be.api.v1.endpoints.cart.checkout.post import router as v1_checkout_post
+from be.api.v1.endpoints.cart.quotation.post import router as v1_cart_quotation_post
+from be.api.v1.endpoints.orders.get import router as v1_orders_get
+from be.api.v1.endpoints.payments.intent.post import router as v1_payments_intent_post
 from be.api.v1.endpoints.products.get import router as v1_products_get
 
-
-from be.api.v1.endpoints.product_categories.get import (
-    router as v1_product_categories_get,
-)
-from be.api.v1.endpoints.product_categories.post import (
-    router as v1_product_categories_post,
-)
-from be.api.v1.endpoints.product_categories.delete import (
-    router as v1_product_categories_delete,
-)
-
-from be.api.v1.endpoints.payments.intent.post import router as v1_payments_intent_post
-from be.api.v1.endpoints.cart.quotation.post import router as v1_cart_quotation_post
-from be.api.v1.endpoints.cart.checkout.post import router as v1_checkout_post
+load_dotenv(join(dirname(__file__), '..', '.env.test'))
+base_api_server_url: str = os.getenv('BASE_API_SERVER_URL')
 
 tags_metadata = [
     {
@@ -43,10 +32,7 @@ app = FastAPI(
 )
 
 app.include_router(v1_products_get)
-
-app.include_router(v1_product_categories_get)
-app.include_router(v1_product_categories_post)
-app.include_router(v1_product_categories_delete)
+app.include_router(v1_orders_get)
 
 app.include_router(v1_payments_intent_post)
 app.include_router(v1_cart_quotation_post)
