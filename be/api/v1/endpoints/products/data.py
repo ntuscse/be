@@ -26,6 +26,7 @@ products = [
                 "l": 12,
             },
         },
+        isAvailable=True,
     ),
     # Product(
     #     id="2",
