@@ -25,7 +25,6 @@ def dal_all_read_products() -> list[Product]:
             productCategory=product["product_category"],
             stock=product["stock"],
             isAvailable=product["is_available"],
-            stock=product["stock"],
         ))
 
     return products
@@ -51,7 +50,6 @@ def dal_read_product(item_id: str) -> Product:
         stock=res["current_qty"],
         productCategory=res["product_category"],
         isAvailable=res["is_available"],
-        stock=res["stock"],
     )
 
 def dal_increment_stock_count(item_id: str, increment_value: int, size: str, color: str):
