@@ -8,6 +8,7 @@ class Product(BaseModel):
     price: int
     images: list[str]
     sizes: list[str]
+    sizeChart: str
     colorways: list[str]
     productCategory: str  # todo: change to productCat enum model
     stock: Dict[str, Dict[str, int]]
