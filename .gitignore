@@ -13,3 +13,5 @@ node_modules/
 # generated
 out/
 docs_server/swagger/openapi.json
+
+.env.*

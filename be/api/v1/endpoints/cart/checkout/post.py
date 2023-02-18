@@ -2,15 +2,20 @@ import os
 import uuid
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from datetime import datetime
+from botocore.exceptions import ClientError
+from datetime import datetime, timedelta
 import stripe
 from be.api.v1.templates.non_auth_route import create_non_auth_router
 from be.api.v1.models.cart import PriceModel, Cart
+from be.api.v1.models.order_hold_entry import OrderHoldEntry, ReservedProduct
 from be.api.v1.models.orders import OrderItem, Order, OrderStatus
 from be.api.v1.utils.cart_utils import calc_cart_value, describe_cart, generate_order_items_from_cart
 from utils.dal.order import dal_create_order
+from utils.dal.products import dal_increment_stock_count
+from utils.dal.order_hold import dal_create_order_hold_entry
 
 stripe.api_key = os.environ["STRIPE_SECRET_KEY"]
+DEFAULT_ORDER_EXPIRY_TIME = 1
 
 router = APIRouter(prefix="/cart/checkout", tags=["cart"])
 
@@ -30,6 +35,7 @@ class PostCheckoutResponseModel(BaseModel):
     items: list[OrderItem]
     price: PriceModel
     payment: PaymentModel
+    expiry: int
 
 
 @router.post("", response_model=PostCheckoutResponseModel)
@@ -49,8 +55,6 @@ async def post_checkout(req: CheckoutRequestBodyModel):
         price = calc_cart_value(items_products)
         description = describe_cart(items_products, orderID)
 
-        # todo: create "pending" order here - in db
-
         payment_intent = stripe.PaymentIntent.create(
             payment_method_types=["paynow"],
             payment_method_data={"type": "paynow"},
@@ -65,6 +69,7 @@ async def post_checkout(req: CheckoutRequestBodyModel):
         paymentPlatform = "stripe"
         orderItems = items_products
         status = OrderStatus.PENDING_PAYMENT
+        expiry = datetime.now() + timedelta(hours=int(os.environ.get("ORDER_EXPIRY_TIME", DEFAULT_ORDER_EXPIRY_TIME)))
 
         order = Order(
             orderID = orderID,
@@ -76,7 +81,14 @@ async def post_checkout(req: CheckoutRequestBodyModel):
             status = status
         )
 
+        for orderItem in orderItems:
+            dal_increment_stock_count(orderItem.id, -orderItem.quantity, orderItem.size, orderItem.colorway)
+
+        reservedProducts = [ReservedProduct(productID=item.productId, qty=item.quantity) for item in req.items]
+        orderHoldEntry = OrderHoldEntry(transactionID=transactionID, expiry=int(expiry.timestamp()), reservedProducts=reservedProducts)
+
         dal_create_order(order)
+        dal_create_order_hold_entry(orderHoldEntry)
 
         return {
             "orderId": orderID,
@@ -86,9 +98,15 @@ async def post_checkout(req: CheckoutRequestBodyModel):
                 "paymentGateway": "stripe",
                 "clientSecret": payment_intent.client_secret
             },
-            "email": req.email
+            "email": req.email,
+            "expiry": int(expiry.timestamp())
         }
 
+    except ClientError as e:
+        if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
+            raise HTTPException(status_code=400, detail="Current quantity cannot be less than 0 and must be available for sale")
+        else:
+            raise HTTPException(status_code=500, detail=e)
 
     except Exception as e:
         print("Error checking out:", e)

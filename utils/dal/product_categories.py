@@ -9,13 +9,13 @@ from utils.aws.dynamodb import (
 
 table_name = os.environ["PRODUCT_CATEGORIES_TABLE_NAME"]
 
-def create_product_category(self, product_category_name: str):
+def create_product_category(product_category_name: str):
     item = {
         {"name": {"S": product_category_name}}
     }
     write_item_to_db(table_name, item)
 
-def get_product_category(self, product_category_name: str) -> ProductCategory:
+def get_product_category(product_category_name: str) -> ProductCategory:
     key = {
         {"name": {"S": product_category_name}}
     }
@@ -26,7 +26,7 @@ def get_product_category(self, product_category_name: str) -> ProductCategory:
     }
 
 
-def del_product_category(self, product_category_name: str) -> ProductCategory:
+def del_product_category(product_category_name: str) -> ProductCategory:
     key = {
         {"name": {"S": product_category_name}}
     }

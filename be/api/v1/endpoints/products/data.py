@@ -12,9 +12,21 @@ products = [
         sizes=["xs", "s", "m", "l"],
         colorways=["Black", "White"],
         productCategory="t-shirt",
-        stock=[
-            [0, 1, 2, 3], [1, 2, 3, 4],
-        ],
+        stock={
+            "Black": {
+                "xs": 5,
+                "s": 10,
+                "m": 7,
+                "l": 12,
+            },
+            "White": {
+                "xs": 5,
+                "s": 10,
+                "m": 7,
+                "l": 12,
+            },
+        },
+        isAvailable=True,
     ),
     # Product(
     #     id="2",
