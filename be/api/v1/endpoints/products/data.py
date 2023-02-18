@@ -12,6 +12,7 @@ products = [
         sizes=["xs", "s", "m", "l"],
         colorways=["Black", "White"],
         productCategory="t-shirt",
+        sizeChart="https://cdn.ntuscse.com/merch/size-chart/trendlink.png",
         stock={
             "Black": {
                 "xs": 5,
