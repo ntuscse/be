@@ -16,11 +16,14 @@ class GetProductsResponseModel(BaseModel):
 @router.get("", response_model=GetProductsResponseModel)
 # gets all products
 async def get_products():
-    # table_name = os.environ.get("PRODUCTS_TABLE_NAME")
-    products_list = dal_all_read_products()
-    print('products', products_list)
-
-    return {"products": products_list}
+    try:
+        # table_name = os.environ.get("PRODUCTS_TABLE_NAME")
+        products_list = dal_all_read_products()
+        print('products', products_list)
+        return {"products": products_list}
+    except Exception as e:
+        print("Error reading products:", e)
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/{item_id}", response_model=Product)
@@ -28,7 +31,8 @@ async def get_products():
 async def get_product(item_id: str):
     try:
         return dal_read_product(item_id)
-    except Exception:
+    except Exception as e:
+        print("Error reading product:", e)
         raise HTTPException(status_code=404, detail="Product not found")
 
 
