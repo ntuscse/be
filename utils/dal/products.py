@@ -1,3 +1,4 @@
+import json
 import boto3
 import os
 from fastapi import HTTPException
@@ -16,8 +17,7 @@ def dal_all_read_products() -> list[Product]:
     res = read_all_items_from_db(table_name)
     products = []
     for product in res:
-        deserializer = boto3.dynamodb.types.TypeDeserializer()
-        stock = {k: deserializer.deserialize(v) for k, v in product["stock"].items()}
+        product = json.loads(json.dumps(res, default=str))
 
         products.append(Product(
             id=product["id"],
@@ -25,10 +25,10 @@ def dal_all_read_products() -> list[Product]:
             price=product["price"],
             images=product["images"],
             sizes=product["sizes"],
-            sizeChart=products["size_chart"],
+            sizeChart=product["size_chart"],
             colorways=product["colorways"],
             productCategory=product["product_category"],
-            stock=stock,
+            stock=product["stock"],
             isAvailable=product["is_available"],
         ))
 
@@ -40,10 +40,11 @@ def dal_read_product(item_id: str) -> Product:
     key = {"id": item_id}
 
     res = read_item_from_db(table_name, key)
-    print(res)
 
     if res is None:
         raise Exception("No product found in db")
+
+    res = json.loads(json.dumps(res, default=str))
 
     return Product(
         id=res["id"],
