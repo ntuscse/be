@@ -17,7 +17,7 @@ def dal_all_read_products() -> list[Product]:
     res = read_all_items_from_db(table_name)
     products = []
     for product in res:
-        product = json.loads(json.dumps(res, default=str))
+        product = json.loads(json.dumps(product, default=str))
 
         products.append(Product(
             id=product["id"],
