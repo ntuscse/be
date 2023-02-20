@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Dict
 
 
 class Product(BaseModel):
@@ -11,5 +10,5 @@ class Product(BaseModel):
     sizeChart: str
     colorways: list[str]
     productCategory: str  # todo: change to productCat enum model
-    stock: Dict[str, Dict[str, int]]
+    stock: dict[str, dict[str, int]]
     isAvailable: bool = True

@@ -15,6 +15,12 @@ def dal_all_read_products() -> list[Product]:
     res = read_all_items_from_db(table_name)
     products = []
     for product in res:
+        stock = {}
+        for k, v in product["stock"].items():
+            stock[k] = {}
+            for j, stockCount in v.items():
+                stock[k][j] = stockCount
+
         products.append(Product(
             id=product["id"],
             name=product["name"],
@@ -24,7 +30,7 @@ def dal_all_read_products() -> list[Product]:
             sizeChart=products["size_chart"],
             colorways=product["colorways"],
             productCategory=product["product_category"],
-            stock=product["stock"],
+            stock=stock,
             isAvailable=product["is_available"],
         ))
 
@@ -38,7 +44,7 @@ def dal_read_product(item_id: str) -> Product:
     res = read_item_from_db(table_name, key)
     print(res)
 
-    if res is None:        
+    if res is None:
         raise Exception("No product found in db")
 
     return Product(
