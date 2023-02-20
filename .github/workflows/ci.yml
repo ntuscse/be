@@ -58,7 +58,7 @@ jobs:
         run: npm run setup
         
       - name: Pytest
-        run: npm run test
+        run: npm run test:py # TODO: change this to `npm run test`
       
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
