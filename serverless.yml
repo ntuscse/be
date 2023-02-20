@@ -37,6 +37,7 @@ plugins:
   - serverless-python-requirements
   - serverless-lift
   - serverless-dotenv-plugin
+#  - serverless-offline-ssm
   - serverless-offline # serverless-offline needs to be last in the list
 
 custom:
