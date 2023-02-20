@@ -48,7 +48,7 @@ def dal_read_product(item_id: str) -> Product:
         images=res["images"],
         sizes=res["sizes"],
         colorways=res["colorways"],
-        stock=res["current_qty"],
+        stock=res["stock"],
         productCategory=res["product_category"],
         isAvailable=res["is_available"],
     )
