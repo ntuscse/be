@@ -1,3 +1,4 @@
+import boto3
 import os
 from fastapi import HTTPException
 from be.api.v1.models.product import Product
@@ -15,11 +16,8 @@ def dal_all_read_products() -> list[Product]:
     res = read_all_items_from_db(table_name)
     products = []
     for product in res:
-        stock = {}
-        for k, v in product["stock"].items():
-            stock[k] = {}
-            for j, stockCount in v.items():
-                stock[k][j] = stockCount
+        deserializer = boto3.dynamodb.types.TypeDeserializer()
+        stock = {k: deserializer.deserialize(v) for k, v in product["stock"].items()}
 
         products.append(Product(
             id=product["id"],
