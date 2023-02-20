@@ -38,6 +38,16 @@ jobs:
           virtualenvs-path: ./poetry_virtualenv
           installer-parallel: true
 
+      - name: Create dummy .env file for tests
+        run: |
+          touch .env
+          echo "
+          STRIPE_SECRET_KEY=key
+          FRONTEND_HOST='http://localhost:3000'
+          PRODUCTS_TABLE_NAME=testing-products
+          PRODUCT_CATEGORIES_TABLE_NAME=testing-products-categories
+          " >> .env
+
       - name: Setup aws dummy credentials
         run: |
           mkdir ~/.aws
@@ -78,7 +88,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.9"
+          python-version: "3.9.16"
           architecture: "x64"
 
       - name: Install and configure Poetry
