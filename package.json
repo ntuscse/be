@@ -9,7 +9,7 @@
     "offline": "poetry run serverless offline start --stage dev --noPrependStageInUrl",
     "test": "concurrently -n pytest --kill-others --success first \"npm run test:py\"",
     "test:watch": "concurrently -n pytest --kill-others \"npm run test:py:watch\"",
-    "test:py": "poetry run pytest --import-mode importlib -vv",
+    "test:py": "poetry run pytest --cov-config=.coveragerc --import-mode importlib -vv ",
     "test:py:watch": "poetry run pytest-watch -- --import-mode importlib -vv",
     "lint": "poetry run pylint --fail-under=8 be",
     "lint:fix": "poetry run black be/",

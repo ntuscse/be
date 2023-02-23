@@ -15,3 +15,7 @@ out/
 docs_server/swagger/openapi.json
 
 .env.*
+/.coverage
+/.pytest_cache/
+/coverage_html/
+/coverage.lcov
