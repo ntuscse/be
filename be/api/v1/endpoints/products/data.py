@@ -10,8 +10,24 @@ products = [
              "sggoods_09_451406.jpg?width=1008&impolicy=quality_75")
         ],
         sizes=["xs", "s", "m", "l"],
-        colorways=["Black, White"],
+        colorways=["Black", "White"],
         productCategory="t-shirt",
+        sizeChart="https://cdn.ntuscse.com/merch/size-chart/trendlink.png",
+        stock={
+            "Black": {
+                "xs": 5,
+                "s": 10,
+                "m": 7,
+                "l": 12,
+            },
+            "White": {
+                "xs": 5,
+                "s": 10,
+                "m": 7,
+                "l": 12,
+            },
+        },
+        isAvailable=True,
     ),
     # Product(
     #     id="2",

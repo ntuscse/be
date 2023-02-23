@@ -3,7 +3,7 @@ from typing import Optional
 
 class CartItem(BaseModel):
     productId: str
-    size: Optional[str]
+    size: str
     quantity: int
     colorway: str
     

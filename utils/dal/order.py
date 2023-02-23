@@ -1,6 +1,6 @@
-import datetime
+from datetime import datetime
 import os
-from be.api.v1.models.orders import Order, OrderStatus
+from be.api.v1.models.orders import Order, OrderItem, OrderStatus
 from utils.aws.dynamodb import read_item_from_db, write_item_to_db
 
 table_name = os.environ.get("ORDERS_TABLE_NAME", "test_orders_table")
@@ -31,7 +31,7 @@ def dal_create_order(order: Order):
     write_item_to_db(table_name, order_dict)
 
 def dal_read_order(order_id: str) -> Order:
-    key = {"id": order_id}
+    key = {"orderID": order_id}
 
     res = read_item_from_db(table_name, key)
 

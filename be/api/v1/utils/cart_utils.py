@@ -1,7 +1,11 @@
+import os
 from be.api.v1.models.orders import OrderItem
 from be.api.v1.models.cart import Cart, PriceModel
 from utils.dal.products import dal_all_read_products, dal_read_product
+from typing import List
 
+
+frontend_url = os.environ["FRONTEND_HOST"]
 
 def generate_order_items_from_cart(cart: Cart):
     cart_order_items = []
@@ -57,8 +61,10 @@ def calc_cart_value(cart_order_items: list[OrderItem]):
         grandTotal=grand_total
     )
 
-def describe_cart(cart_order_items: list[OrderItem]):
-    entries = []
+def describe_cart(cart_order_items: list[OrderItem], order_id: str):
+    entries = [
+        f'{frontend_url}/order-summary/{order_id} | '
+    ]
     for entry in cart_order_items:
         price = entry.price * entry.quantity
 
