@@ -1,12 +1,16 @@
-from be.api.v1.db.products import read_product
+import os
 from be.api.v1.models.orders import OrderItem
 from be.api.v1.models.cart import Cart, PriceModel
+from utils.dal.products import dal_all_read_products, dal_read_product
+from typing import List
 
+
+frontend_url = os.environ["FRONTEND_HOST"]
 
 def generate_order_items_from_cart(cart: Cart):
     cart_order_items = []
     for i in cart.items:
-        product = read_product(i.productId)
+        product = dal_read_product(i.productId)
         if not product:
             raise Exception(f"productId {i.productId} could not be found")
         cart_order_items.append(
@@ -14,12 +18,11 @@ def generate_order_items_from_cart(cart: Cart):
                 id=product.id,
                 name=product.name,
                 price=product.price,
-                images=product.images,
-                sizes=product.sizes,
+                image=product.images[0],
                 productCategory=product.productCategory,
-                isAvailable=product.isAvailable,
                 quantity=i.quantity,
                 size=i.size,
+                colorway=i.colorway
             ))
     return cart_order_items
 
@@ -57,3 +60,17 @@ def calc_cart_value(cart_order_items: list[OrderItem]):
         discount=0,  # todo
         grandTotal=grand_total
     )
+
+def describe_cart(cart_order_items: list[OrderItem], order_id: str):
+    entries = [
+        f'{frontend_url}/order-summary/{order_id} | '
+    ]
+    for entry in cart_order_items:
+        price = entry.price * entry.quantity
+
+        name = entry.name
+        if entry.size:
+            name = f'{entry.name} (Size: {entry.size.upper()})'
+        entries.append(f'{name} x{entry.quantity} - S${price/100:.2f}')
+
+    return '\n'.join(entries)

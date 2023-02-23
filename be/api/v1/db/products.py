@@ -1,13 +1,12 @@
-from be.api.v1.endpoints.products.data import products
+from be.api.v1.models.product import Product
+from utils.dal.products import dal_read_product
 
 
-def read_product(product_id: str):
+def read_product(product_id: str) -> Product:
     if not product_id:
         raise Exception('no product_id was passed to getProduct db function')
-    product = next((x for x in products if x.id == product_id), None)
 
-    # todo: integrate dynamoDb products table, wrap with pydantic
-    # product = read_item_from_db()
+    product = dal_read_product(product_id)
 
     return product
 

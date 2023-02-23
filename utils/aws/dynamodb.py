@@ -1,8 +1,8 @@
 import boto3
-from boto3.dynamodb.conditions import Key
 import os
-from botocore.config import Config
 from dotenv import load_dotenv
+from typing import Union
+
 
 load_dotenv()
 
@@ -23,22 +23,34 @@ dynamodb = boto3.resource(
     **dynamodb_args
 )
 
+UpdateKey = dict[str, dict[str, Union[int,str]]]
+ExpressionAttributeValues = dict[str, dict[str, Union[int,str]]]
+
 ######
 # reference : https://dynobase.dev/dynamodb-python-with-boto3
 #####
 
 def read_item_from_db(table_name, key, pagination=False):
-    response = dynamodb.get_item(
-        TableName=table_name,
-        Key=key
+    table = dynamodb.Table(table_name)
+    response = table.get_item(
+        Key=key # Key is of format {<keyName>: <value>} eg {"orderID": order.orderID}
     )
+    print("==== response from ddb =====")
+    print(response)
     return response.get('Item')
 
+
 def read_all_items_from_db(tableName, pagination=False):
+    print("ATTEMPTING TO read_all_items_from_db")
+    print(f"from tableName {tableName}")
     table = dynamodb.Table(tableName)
     response = table.scan()
 
     data = response['Items']
+
+    print("=== start of table data ===")
+    print(data)
+    print("=== end of table data ===")
 
     while 'LastEvaluatedKey' in response:
         response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
@@ -48,25 +60,24 @@ def read_all_items_from_db(tableName, pagination=False):
 
 
 def write_item_to_db(table_name, item):
-    response = dynamodb.put_item(
-        TableName=table_name,
+    table = dynamodb.Table(table_name)
+    response = table.put_item(
         Item=item
     )
-    waiter = dynamodb.get_waiter('table_exists')
-    waiter.wait(TableName=table_name)
     return response
 
-
-def update_item_in_db(table_name, item):
-    response = dynamodb.update_item(
-        TableName=table_name,
-        Item=item
+def update_item_in_db(table_name: str, key: UpdateKey, update_expression: str = None, condition_expression: str = None, expression_attribute_values: dict = None, expression_attribute_names: dict = None):
+    table = dynamodb.Table(table_name)
+    response = table.update_item(
+        Key=key,
+        UpdateExpression=update_expression,
+        ConditionExpression=condition_expression,
+        ExpressionAttributeValues=expression_attribute_values,
+        ExpressionAttributeNames=expression_attribute_names,
     )
-    waiter = dynamodb.get_waiter('table_exists')
-    waiter.wait(TableName=table_name)
     return response
 
-
+# TODO: Update based on https://dynobase.dev/dynamodb-python-with-boto3
 def delete_item_from_db(table_name, key):
     response = dynamodb.delete_item(
         TableName=table_name,
@@ -76,7 +87,7 @@ def delete_item_from_db(table_name, key):
     waiter.wait(TableName=table_name)
     return response
 
-
+# TODO: Update based on https://dynobase.dev/dynamodb-python-with-boto3
 def create_db(table_name, attribute_definitions, key_schema, provisioned_throughput):
     table = dynamodb.create_table(
         TableName=table_name,

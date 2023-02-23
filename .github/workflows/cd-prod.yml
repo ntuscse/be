@@ -53,4 +53,4 @@ jobs:
 
       - name: Deploy to AWS
         run: |
-          npm run deploy -- --stage production --aws-profile github_actions
+          npm run deploy -- --stage prod --aws-profile github_actions

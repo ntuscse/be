@@ -3,8 +3,10 @@ from typing import Optional
 
 class CartItem(BaseModel):
     productId: str
-    size: Optional[str]
+    size: str
     quantity: int
+    colorway: str
+    
 class Cart(BaseModel):
     items: list[CartItem]
     promoCode: Optional[str]
