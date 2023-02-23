@@ -18,9 +18,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "14"
+          cache: 'npm'
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -45,6 +46,13 @@ jobs:
 
       - name: Install dependencies
         run: npm run setup:cd
+
+      - name: Cache Serverless
+        id: cd-dev-cache-serverless
+        uses: actions/cache@v3
+        with:
+          path: .serverless
+          key: cd-dev-${{ runner.os }}-serverless
 
       - name: Setup Serverless
         run: |
