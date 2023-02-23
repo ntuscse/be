@@ -74,6 +74,11 @@ jobs:
           FRONTEND_HOST: 'https://dev.merch.ntuscse.com'
 
           BASE_API_SERVER_URL: 'https://api.dev.ntuscse.com'
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: ./coverage.xml
       
   lint:
     runs-on: ubuntu-latest

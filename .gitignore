@@ -14,8 +14,14 @@ node_modules/
 out/
 docs_server/swagger/openapi.json
 
+#env vars
 .env.*
-/.coverage
+
+# pytest
 /.pytest_cache/
+
+# test coverage
+/.coverage
 /coverage_html/
 /coverage.lcov
+/coverage.xml
