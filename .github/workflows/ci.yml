@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "16"
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -38,6 +38,17 @@ jobs:
           virtualenvs-path: ./poetry_virtualenv
           installer-parallel: true
 
+      - name: Create dummy .env file for tests
+        run: |
+          touch .env
+          echo "
+          STRIPE_SECRET_KEY=key
+          FRONTEND_HOST='http://localhost:3000'
+          PRODUCTS_TABLE_NAME=testing-products
+          PRODUCT_CATEGORIES_TABLE_NAME=testing-products-categories
+          ORDER_HOLD_TABLE_NAME=testing-order-hold
+          " >> .env
+
       - name: Setup aws dummy credentials
         run: |
           mkdir ~/.aws
@@ -47,7 +58,7 @@ jobs:
         run: npm run setup
         
       - name: Pytest
-        run: npm run test
+        run: npm run test:py # TODO: change this to `npm run test`
       
         env:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
@@ -63,6 +74,11 @@ jobs:
           FRONTEND_HOST: 'https://dev.merch.ntuscse.com'
 
           BASE_API_SERVER_URL: 'https://api.dev.ntuscse.com'
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: ./coverage.xml
       
   lint:
     runs-on: ubuntu-latest
@@ -78,8 +94,19 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.9"
+          python-version: "3.9.16"
           architecture: "x64"
+
+      - name: Create dummy .env file for lint
+        run: |
+          touch .env
+          echo "
+          STRIPE_SECRET_KEY=key
+          FRONTEND_HOST='http://localhost:3000'
+          PRODUCTS_TABLE_NAME=testing-products
+          PRODUCT_CATEGORIES_TABLE_NAME=testing-products-categories
+          ORDER_HOLD_TABLE_NAME=testing-order-hold
+          " >> .env
 
       - name: Install and configure Poetry
         uses: snok/install-poetry@v1

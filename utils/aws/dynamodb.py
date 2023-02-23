@@ -1,8 +1,8 @@
 import boto3
-from boto3.dynamodb.conditions import Key
 import os
-from botocore.config import Config
 from dotenv import load_dotenv
+from typing import Union
+
 
 load_dotenv()
 
@@ -22,6 +22,9 @@ dynamodb = boto3.resource(
     region_name='ap-southeast-1',
     **dynamodb_args
 )
+
+UpdateKey = dict[str, dict[str, Union[int,str]]]
+ExpressionAttributeValues = dict[str, dict[str, Union[int,str]]]
 
 ######
 # reference : https://dynobase.dev/dynamodb-python-with-boto3
@@ -63,14 +66,15 @@ def write_item_to_db(table_name, item):
     )
     return response
 
-# TODO: Update based on https://dynobase.dev/dynamodb-python-with-boto3
-def update_item_in_db(table_name, item):
-    response = dynamodb.update_item(
-        TableName=table_name,
-        Item=item
+def update_item_in_db(table_name: str, key: UpdateKey, update_expression: str = None, condition_expression: str = None, expression_attribute_values: dict = None, expression_attribute_names: dict = None):
+    table = dynamodb.Table(table_name)
+    response = table.update_item(
+        Key=key,
+        UpdateExpression=update_expression,
+        ConditionExpression=condition_expression,
+        ExpressionAttributeValues=expression_attribute_values,
+        ExpressionAttributeNames=expression_attribute_names,
     )
-    waiter = dynamodb.get_waiter('table_exists')
-    waiter.wait(TableName=table_name)
     return response
 
 # TODO: Update based on https://dynobase.dev/dynamodb-python-with-boto3

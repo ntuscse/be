@@ -2,6 +2,7 @@ import os
 from be.api.v1.models.orders import OrderItem
 from be.api.v1.models.cart import Cart, PriceModel
 from utils.dal.products import dal_all_read_products, dal_read_product
+from typing import List
 
 
 frontend_url = os.environ["FRONTEND_HOST"]
