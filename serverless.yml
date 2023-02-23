@@ -33,7 +33,6 @@ provider:
     FRONTEND_HOST: ${env:FRONTEND_HOST, ssm:/FRONTEND_HOST_${self:provider.stage}}
 
 plugins:
-  - serverless-dynamodb-local
   - serverless-python-requirements
   - serverless-lift
   - serverless-dotenv-plugin
@@ -55,17 +54,6 @@ custom:
     productsTableName: 'be-${self:provider.stage}-products'
     ordersTableName: 'be-${self:provider.stage}-orders'
     ordersHoldTableName: 'be-${self:provider.stage}-orders-hold'
-  dynamodb:
-    stages:
-      - dev
-    start:
-      migrate: true
-      port: 8011
-      inMemory: true
-      heapInitial: 200m
-      heapMax: 1g
-      seed: true
-      convertEmptyValues: true
 
 functions:
   root:
